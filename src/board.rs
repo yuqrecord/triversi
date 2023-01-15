@@ -7,4 +7,4 @@ pub mod lattice_board;
 pub mod logic_board;
 
 pub use lattice_board::{LatticeBlock, LatticeBoard};
-pub use logic_board::{AvailableList, LogicBoard, Player, PlayerMark};
+pub use logic_board::{AvailableList, LogicBoard, Player, PlayerMark, PLAYER_LIST};

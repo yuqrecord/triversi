@@ -4,7 +4,7 @@
 // see https://opensource.org/licenses/mit-license.php
 
 use crate::app::key_binding;
-use crate::board::{AvailableList, LatticeBlock, LatticeBoard, Player, PlayerMark};
+use crate::board::{AvailableList, LatticeBlock, LatticeBoard, Player, PlayerMark, PLAYER_LIST};
 use crate::error::TriversiError;
 use getset::CopyGetters;
 use std::cmp;
@@ -256,9 +256,7 @@ impl System {
                 self.clear_message();
                 self.lattice_board.logic_board().count();
                 write!(self.message, " Game is finished! Final Score is").unwrap();
-                let mut player_iter = [Player::One, Player::Two, Player::Three]
-                    .into_iter()
-                    .peekable();
+                let mut player_iter = PLAYER_LIST.iter().peekable();
                 while let Some(player) = player_iter.next() {
                     if player_iter.peek().is_none() {
                         write!(self.message, " and").unwrap();
@@ -266,11 +264,11 @@ impl System {
                     write!(
                         self.message,
                         " Player-{} = {}",
-                        self.lattice_board.player_mark().convert(player),
+                        self.lattice_board.player_mark().convert(*player),
                         self.lattice_board
                             .logic_board()
                             .count()
-                            .get(&player)
+                            .get(player)
                             .unwrap(),
                     )
                     .unwrap();
@@ -402,17 +400,7 @@ impl System {
                 .block(Block::default().borders(Borders::ALL)),
             chunks[0],
         );
-        frame.render_widget(
-            Paragraph::new(format!(
-                "{}",
-                self.lattice_board
-                    .player_mark()
-                    .convert(self.current_player)
-            ))
-            .alignment(Alignment::Center)
-            .block(Block::default().borders(Borders::ALL).title("Player")),
-            chunks_1[0],
-        );
+        self.render_player(frame, play, chunks_1[0]);
         frame.render_widget(
             Paragraph::new(format!(
                 "{}, {}",
@@ -455,16 +443,16 @@ impl System {
             )
             .unwrap();
             writeln!(&mut self.debug_information).unwrap();
-            for player in [Player::One, Player::Two, Player::Three] {
+            for player in PLAYER_LIST {
                 writeln!(
                     &mut self.debug_information,
                     " Available position of Player-{}:",
-                    self.lattice_board.player_mark().convert(player)
+                    self.lattice_board.player_mark().convert(*player)
                 )
                 .unwrap();
                 let mut keys = self
                     .available_list
-                    .get(&player)
+                    .get(player)
                     .unwrap()
                     .keys()
                     .collect::<Vec<_>>();
@@ -474,7 +462,7 @@ impl System {
                         &mut self.debug_information,
                         " {:?}: {:?}",
                         key,
-                        self.available_list.get(&player).unwrap().get(key).unwrap()
+                        self.available_list.get(player).unwrap().get(key).unwrap()
                     )
                     .unwrap();
                 }
@@ -536,6 +524,32 @@ impl System {
                 .alignment(Alignment::Center)
                 .block(Block::default()),
             chunks[2],
+        );
+    }
+
+    fn render_player<B: Backend>(&self, frame: &mut Frame<B>, play: Play, rect: Rect) {
+        frame.render_widget(
+            Paragraph::new(Spans::from(
+                [Player::One, Player::Two, Player::Three]
+                    .iter()
+                    .map(|&player| {
+                        if player != self.current_player && play != Play::Finished {
+                            Span::styled(
+                                format!("{}", self.lattice_board.player_mark().convert(player)),
+                                Style::default().add_modifier(Modifier::DIM),
+                            )
+                        } else {
+                            Span::raw(format!(
+                                "{}",
+                                self.lattice_board.player_mark().convert(player)
+                            ))
+                        }
+                    })
+                    .collect::<Vec<_>>(),
+            ))
+            .alignment(Alignment::Center)
+            .block(Block::default().borders(Borders::ALL).title("Player")),
+            rect,
         );
     }
 

@@ -28,6 +28,8 @@ pub enum Player {
     Three,
 }
 
+pub const PLAYER_LIST: &[Player] = &[Player::One, Player::Two, Player::Three];
+
 #[derive(Clone, Copy, Debug)]
 pub struct PlayerMark(char, char, char);
 
@@ -81,9 +83,9 @@ impl PlayerMark {
 impl Default for AvailableList {
     fn default() -> Self {
         Self {
-            available_list: [Player::One, Player::Two, Player::Three]
-                .into_iter()
-                .map(|player| (player, HashMap::new()))
+            available_list: PLAYER_LIST
+                .iter()
+                .map(|player| (*player, HashMap::new()))
                 .collect::<HashMap<_, _>>(),
             position_list_buf: Vec::new(),
         }
@@ -136,9 +138,9 @@ impl AvailableList {
 impl Default for Count {
     fn default() -> Self {
         Self {
-            count: [Player::One, Player::Two, Player::Three]
-                .into_iter()
-                .map(|player| (player, 0))
+            count: PLAYER_LIST
+                .iter()
+                .map(|player| (*player, 0))
                 .collect::<HashMap<_, _>>(),
         }
     }
@@ -312,7 +314,7 @@ impl LogicBoard {
     }
 
     pub fn update_available_list(&self, available_list: &mut AvailableList) {
-        for player in [Player::One, Player::Two, Player::Three] {
+        for &player in PLAYER_LIST {
             available_list.get_mut(&player).unwrap().clear();
             for (y, row) in self.board.iter().enumerate() {
                 for (x, target_player) in row.iter().enumerate() {
