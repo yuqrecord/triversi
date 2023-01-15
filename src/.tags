@@ -1,0 +1,179 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/Users/ishida/myfiles/products/triversi/src/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	/1f2c0e0/
+AskInit	app/system.rs	/^    AskInit,$/;"	e	enum:Status
+AskQuit	app/system.rs	/^    AskQuit,$/;"	e	enum:Status
+AvailableList	board/logic_board.rs	/^impl AvailableList {$/;"	c
+AvailableList	board/logic_board.rs	/^impl Default for AvailableList {$/;"	c
+AvailableList	board/logic_board.rs	/^impl Deref for AvailableList {$/;"	c
+AvailableList	board/logic_board.rs	/^impl DerefMut for AvailableList {$/;"	c
+AvailableList	board/logic_board.rs	/^pub struct AvailableList {$/;"	s
+Background	board/lattice_board.rs	/^    Background,$/;"	e	enum:LatticeBlock
+Bond	board/lattice_board.rs	/^    Bond(Bond),$/;"	e	enum:LatticeBlock
+Bond	board/lattice_board.rs	/^pub enum Bond {$/;"	g
+Cli	cli.rs	/^impl Cli {$/;"	c
+Cli	cli.rs	/^pub struct Cli {$/;"	s
+ColorConfig	app/system.rs	/^impl ColorConfig {$/;"	c
+ColorConfig	app/system.rs	/^impl Default for ColorConfig {$/;"	c
+ColorConfig	app/system.rs	/^struct ColorConfig {$/;"	s
+Count	board/logic_board.rs	/^impl Count {$/;"	c
+Count	board/logic_board.rs	/^impl Default for Count {$/;"	c
+Count	board/logic_board.rs	/^impl Deref for Count {$/;"	c
+Count	board/logic_board.rs	/^impl DerefMut for Count {$/;"	c
+Count	board/logic_board.rs	/^pub struct Count {$/;"	s
+Error	board/logic_board.rs	/^    type Error = TriversiError;$/;"	t	implementation:PlayerMark
+Finished	app/system.rs	/^    Finished,$/;"	e	enum:Play
+Horizontal	board/lattice_board.rs	/^    Horizontal,$/;"	e	enum:Bond
+InvalidBoardDistance	error.rs	/^    InvalidBoardDistance(usize),$/;"	e	enum:TriversiError
+InvalidBoardRange	error.rs	/^    InvalidBoardRange(usize),$/;"	e	enum:TriversiError
+InvalidStringForPlayerMarks	error.rs	/^    InvalidStringForPlayerMarks(String),$/;"	e	enum:TriversiError
+LatticeBlock	board/lattice_board.rs	/^pub enum LatticeBlock {$/;"	g
+LatticeBoard	board/lattice_board.rs	/^impl LatticeBoard {$/;"	c
+LatticeBoard	board/lattice_board.rs	/^impl fmt::Display for LatticeBoard {$/;"	c
+LatticeBoard	board/lattice_board.rs	/^pub struct LatticeBoard {$/;"	s
+LeftDown	board/lattice_board.rs	/^    LeftDown,$/;"	e	enum:Bond
+LogicBoard	board/logic_board.rs	/^impl LogicBoard {$/;"	c
+LogicBoard	board/logic_board.rs	/^pub struct LogicBoard {$/;"	s
+One	board/logic_board.rs	/^    One,$/;"	e	enum:Player
+Play	app/system.rs	/^    Play(Play),$/;"	e	enum:Status
+Play	app/system.rs	/^pub enum Play {$/;"	g
+Player	board/logic_board.rs	/^impl Player {$/;"	c
+Player	board/logic_board.rs	/^pub enum Player {$/;"	g
+PlayerMark	board/logic_board.rs	/^impl PlayerMark {$/;"	c
+PlayerMark	board/logic_board.rs	/^impl TryFrom<String> for PlayerMark {$/;"	c
+PlayerMark	board/logic_board.rs	/^pub struct PlayerMark(char, char, char);$/;"	s
+Quit	app/system.rs	/^    Quit,$/;"	e	enum:Status
+RightDown	board/lattice_board.rs	/^    RightDown,$/;"	e	enum:Bond
+Skipped	app/system.rs	/^    Skipped,$/;"	e	enum:Play
+Status	app/system.rs	/^pub enum Status {$/;"	g
+Stone	board/lattice_board.rs	/^    Stone(Option<Player>),$/;"	e	enum:LatticeBlock
+System	app/system.rs	/^impl System {$/;"	c
+System	app/system.rs	/^pub struct System {$/;"	s
+Target	board/logic_board.rs	/^    type Target = HashMap<Player, HashMap<(usize, usize), HashSet<(usize, usize)>>>;$/;"	t	implementation:AvailableList
+Target	board/logic_board.rs	/^    type Target = HashMap<Player, u64>;$/;"	t	implementation:Count
+Three	board/logic_board.rs	/^    Three,$/;"	e	enum:Player
+TriversiError	error.rs	/^pub enum TriversiError {$/;"	g
+Tui	app/tui.rs	/^impl Tui<TermionBackend<AlternateScreen<RawTerminal<Stdout>>>> {$/;"	c
+Tui	app/tui.rs	/^pub struct Tui<B: Backend> {$/;"	s
+Turn	app/system.rs	/^    Turn,$/;"	e	enum:Play
+Two	board/logic_board.rs	/^    Two,$/;"	e	enum:Player
+add_available	board/logic_board.rs	/^    fn add_available<IX: IntoIterator<Item = usize>, IY: IntoIterator<Item = usize>>($/;"	P	implementation:LogicBoard
+add_available_for_down	board/logic_board.rs	/^    fn add_available_for_down($/;"	P	implementation:LogicBoard
+add_available_for_left	board/logic_board.rs	/^    fn add_available_for_left($/;"	P	implementation:LogicBoard
+add_available_for_left_up	board/logic_board.rs	/^    fn add_available_for_left_up($/;"	P	implementation:LogicBoard
+add_available_for_right	board/logic_board.rs	/^    fn add_available_for_right($/;"	P	implementation:LogicBoard
+add_available_for_right_down	board/logic_board.rs	/^    fn add_available_for_right_down($/;"	P	implementation:LogicBoard
+add_available_for_up	board/logic_board.rs	/^    fn add_available_for_up($/;"	P	implementation:LogicBoard
+add_or_extend	board/logic_board.rs	/^    fn add_or_extend($/;"	P	implementation:AvailableList
+advance	board/logic_board.rs	/^    pub fn advance(&mut self) {$/;"	P	implementation:Player
+alternative	app/key_binding.rs	/^pub mod alternative {$/;"	n
+app	lib.rs	/^pub mod app;$/;"	n
+ask_init	app/system.rs	/^    fn ask_init(&mut self, key: Key) {$/;"	P	implementation:System
+ask_quit	app/system.rs	/^    fn ask_quit(&mut self, key: Key) {$/;"	P	implementation:System
+available_list	app/system.rs	/^    available_list: AvailableList,$/;"	m	struct:System
+available_list	board/logic_board.rs	/^    available_list: HashMap<Player, HashMap<(usize, usize), HashSet<(usize, usize)>>>,$/;"	m	struct:AvailableList
+block_to_char	board/lattice_board.rs	/^    pub fn block_to_char(&self, block: LatticeBlock) -> char {$/;"	P	implementation:LatticeBoard
+board	board/logic_board.rs	/^    board: Vec<Vec<Option<Player>>>,$/;"	m	struct:LogicBoard
+board	lib.rs	/^pub mod board;$/;"	n
+board_offset	app/system.rs	/^    board_offset: (i16, i16),$/;"	m	struct:System
+bone_visibility	board/lattice_board.rs	/^    bone_visibility: bool,$/;"	m	struct:LatticeBoard
+change_key_to_str	app/key_binding.rs	/^pub fn change_key_to_str(key: Key) -> String {$/;"	f
+clear_message	app/system.rs	/^    fn clear_message(&mut self) {$/;"	P	implementation:System
+cli	lib.rs	/^pub mod cli;$/;"	n
+color_config	app/system.rs	/^    color_config: ColorConfig,$/;"	m	struct:System
+convert	board/logic_board.rs	/^    pub fn convert(&self, player: Player) -> char {$/;"	P	implementation:PlayerMark
+count	board/logic_board.rs	/^    count: Count,$/;"	m	struct:LogicBoard
+count	board/logic_board.rs	/^    count: HashMap<Player, u64>,$/;"	m	struct:Count
+current_player	app/system.rs	/^    current_player: Player,$/;"	m	struct:System
+current_status	app/system.rs	/^    current_status: Status,$/;"	m	struct:System
+cursor	board/lattice_board.rs	/^    pub fn cursor(&self) -> (usize, usize) {$/;"	P	implementation:LatticeBoard
+cursor	board/logic_board.rs	/^    cursor: (usize, usize),$/;"	m	struct:LogicBoard
+debug_information	app/system.rs	/^    debug_information: String,$/;"	m	struct:System
+decrement	board/logic_board.rs	/^    fn decrement(&mut self, player: Player) {$/;"	P	implementation:Count
+default	app/key_binding.rs	/^pub mod default {$/;"	n
+default	app/system.rs	/^    fn default() -> Self {$/;"	P	implementation:ColorConfig
+default	board/logic_board.rs	/^    fn default() -> Self {$/;"	P	implementation:AvailableList
+default	board/logic_board.rs	/^    fn default() -> Self {$/;"	P	implementation:Count
+deref	board/logic_board.rs	/^    fn deref(&self) -> &Self::Target {$/;"	P	implementation:AvailableList
+deref	board/logic_board.rs	/^    fn deref(&self) -> &Self::Target {$/;"	P	implementation:Count
+deref_mut	board/logic_board.rs	/^    fn deref_mut(&mut self) -> &mut Self::Target {$/;"	P	implementation:AvailableList
+deref_mut	board/logic_board.rs	/^    fn deref_mut(&mut self) -> &mut Self::Target {$/;"	P	implementation:Count
+distance	board/lattice_board.rs	/^    distance: usize,$/;"	m	struct:LatticeBoard
+distance	cli.rs	/^    distance: usize,$/;"	m	struct:Cli
+error	lib.rs	/^pub mod error;$/;"	n
+fmt	board/lattice_board.rs	/^    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {$/;"	P	implementation:LatticeBoard
+increment	board/logic_board.rs	/^    fn increment(&mut self, player: Player) {$/;"	P	implementation:Count
+init	app/system.rs	/^    fn init(&mut self) {$/;"	P	implementation:System
+init	board/lattice_board.rs	/^    pub fn init(&mut self) {$/;"	P	implementation:LatticeBoard
+init	board/logic_board.rs	/^    pub fn init(&mut self) {$/;"	P	implementation:LogicBoard
+key_binding	app.rs	/^pub mod key_binding;$/;"	n
+key_binding_guidance	app/system.rs	/^    key_binding_guidance: String,$/;"	m	struct:System
+lattice_board	app/system.rs	/^    lattice_board: LatticeBoard,$/;"	m	struct:System
+lattice_board	board.rs	/^pub mod lattice_board;$/;"	n
+lattice_board	board/lattice_board.rs	/^    lattice_board: Vec<Vec<LatticeBlock>>,$/;"	m	struct:LatticeBoard
+logic_board	board.rs	/^pub mod logic_board;$/;"	n
+logic_board	board/lattice_board.rs	/^    logic_board: LogicBoard,$/;"	m	struct:LatticeBoard
+logic_to_block	board/lattice_board.rs	/^    fn logic_to_block(&self, logical_position: (usize, usize)) -> (usize, usize) {$/;"	P	implementation:LatticeBoard
+main	main.rs	/^fn main() -> Result<()> {$/;"	f
+make_guidance	app/key_binding.rs	/^pub fn make_guidance() -> String {$/;"	f
+message	app/system.rs	/^    message: String,$/;"	m	struct:System
+message_color	app/system.rs	/^    message_color: Color,$/;"	m	struct:System
+move_cursor_down	board/logic_board.rs	/^    pub fn move_cursor_down(&mut self) {$/;"	P	implementation:LogicBoard
+move_cursor_left	board/logic_board.rs	/^    pub fn move_cursor_left(&mut self) {$/;"	P	implementation:LogicBoard
+move_cursor_right	board/logic_board.rs	/^    pub fn move_cursor_right(&mut self) {$/;"	P	implementation:LogicBoard
+move_cursor_up	board/logic_board.rs	/^    pub fn move_cursor_up(&mut self) {$/;"	P	implementation:LogicBoard
+new	board/logic_board.rs	/^    pub fn new(mark_0: char, mark_1: char, mark_2: char) -> Self {$/;"	P	implementation:PlayerMark
+play	app/system.rs	/^    fn play(&mut self, key: Key, play: Play) {$/;"	P	implementation:System
+player	app/system.rs	/^    fn player(&self, player: Player) -> Color {$/;"	P	implementation:ColorConfig
+player	app/system.rs	/^    player: (Color, Color, Color),$/;"	m	struct:ColorConfig
+player	board/logic_board.rs	/^    pub fn player(&self, position: (usize, usize)) -> Option<Player> {$/;"	P	implementation:LogicBoard
+player_mark	board/lattice_board.rs	/^    player_mark: PlayerMark,$/;"	m	struct:LatticeBoard
+player_marks	cli.rs	/^    player_marks: String,$/;"	m	struct:Cli
+player_style	app/system.rs	/^    fn player_style(&self, player: Option<Player>, under_cursor: bool) -> Style {$/;"	P	implementation:System
+position_list_buf	board/logic_board.rs	/^    position_list_buf: Vec<(usize, usize)>,$/;"	m	struct:AvailableList
+previous_status	app/system.rs	/^    previous_status: Status,$/;"	m	struct:System
+range	board/logic_board.rs	/^    range: usize,$/;"	m	struct:LogicBoard
+range	cli.rs	/^    range: usize,$/;"	m	struct:Cli
+redraw	board/lattice_board.rs	/^    pub fn redraw(&mut self) {$/;"	P	implementation:LatticeBoard
+reflect_from_logic	board/lattice_board.rs	/^    fn reflect_from_logic(&mut self) {$/;"	P	implementation:LatticeBoard
+render_board	app/system.rs	/^    fn render_board<B: Backend>(&self, frame: &mut Frame<B>, play: Play, rect: Rect) {$/;"	P	implementation:System
+reset	board/logic_board.rs	/^    fn reset(&mut self) {$/;"	P	implementation:Count
+run	app/tui.rs	/^    pub fn run(&mut self, app: &mut System) -> anyhow::Result<()> {$/;"	P	implementation:Tui
+run	cli.rs	/^    pub fn run() -> Result<()> {$/;"	P	implementation:Cli
+scroll_down	app/system.rs	/^    fn scroll_down(&mut self) {$/;"	P	implementation:System
+scroll_left	app/system.rs	/^    fn scroll_left(&mut self) {$/;"	P	implementation:System
+scroll_reset	app/system.rs	/^    fn scroll_reset(&mut self) {$/;"	P	implementation:System
+scroll_right	app/system.rs	/^    fn scroll_right(&mut self) {$/;"	P	implementation:System
+scroll_up	app/system.rs	/^    fn scroll_up(&mut self) {$/;"	P	implementation:System
+select_in_play_turn	app/system.rs	/^    fn select_in_play_turn(&mut self) {$/;"	P	implementation:System
+set_block	board/lattice_board.rs	/^    fn set_block(&mut self, block_position: (usize, usize), block: LatticeBlock) {$/;"	P	implementation:LatticeBoard
+set_player	app/system.rs	/^    fn set_player(&mut self) {$/;"	P	implementation:System
+set_player	board/lattice_board.rs	/^    pub fn set_player(&mut self, logical_position: (usize, usize), player: Option<Player>) {$/;"	P	implementation:LatticeBoard
+set_player	board/logic_board.rs	/^    pub fn set_player(&mut self, position: (usize, usize), player: Option<Player>) {$/;"	P	implementation:LogicBoard
+system	app.rs	/^pub mod system;$/;"	n
+terminal	app/tui.rs	/^    terminal: Terminal<B>,$/;"	m	struct:Tui
+toggle_bone_visibility	board/lattice_board.rs	/^    pub fn toggle_bone_visibility(&mut self) {$/;"	P	implementation:LatticeBoard
+transition	app/system.rs	/^    pub fn transition(&mut self, key: Key) {$/;"	P	implementation:System
+try_from	board/logic_board.rs	/^    fn try_from(s: String) -> Result<Self, Self::Error> {$/;"	P	implementation:PlayerMark
+try_new	app/system.rs	/^    pub fn try_new($/;"	P	implementation:System
+try_new	app/tui.rs	/^    pub fn try_new() -> anyhow::Result<Self> {$/;"	P	implementation:Tui
+try_new	board/lattice_board.rs	/^    pub fn try_new($/;"	P	implementation:LatticeBoard
+try_new	board/logic_board.rs	/^    pub fn try_new(range: usize) -> Result<Self, TriversiError> {$/;"	P	implementation:LogicBoard
+tui	app.rs	/^pub mod tui;$/;"	n
+ui	app/system.rs	/^    pub fn ui<B: Backend>(&mut self, frame: &mut Frame<B>) {$/;"	P	implementation:System
+ui_ask_init	app/system.rs	/^    fn ui_ask_init<B: Backend>(&self, frame: &mut Frame<B>) {$/;"	P	implementation:System
+ui_ask_quit	app/system.rs	/^    fn ui_ask_quit<B: Backend>(&self, frame: &mut Frame<B>) {$/;"	P	implementation:System
+ui_play	app/system.rs	/^    fn ui_play<B: Backend>(&mut self, frame: &mut Frame<B>, play: Play) {$/;"	P	implementation:System
+update_available_list	app/system.rs	/^    fn update_available_list(&mut self) {$/;"	P	implementation:System
+update_available_list	board/logic_board.rs	/^    pub fn update_available_list(&self, available_list: &mut AvailableList) {$/;"	P	implementation:LogicBoard
+update_status	app/system.rs	/^    fn update_status(&mut self, status: Status) {$/;"	P	implementation:System
+zoom_in	board/lattice_board.rs	/^    pub fn zoom_in(&mut self) {$/;"	P	implementation:LatticeBoard
+zoom_out	board/lattice_board.rs	/^    pub fn zoom_out(&mut self) {$/;"	P	implementation:LatticeBoard

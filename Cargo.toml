@@ -1,10 +1,29 @@
 [package]
 name = "triversi"
+authors = ["Yuichi Ishida <yu1guana@gmail.com>"]
 version = "0.1.0"
+description = "Triversi: Reversi-like game played by 3 players."
+repository = "https://github.com/yu1guana/triversi"
+license-file = "LICENSE"
+readme = "README.md"
 edition = "2021"
+publish = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[profile.release]
+lto = true
+panic = 'abort'
+codegen-units = 1
+
 [dependencies]
-thiserror = "1.0"
+anyhow = "1.0"
+clap = {version = "4.0", features = ["derive"]}
 getset = "0.1"
+termion = "2.0"
+thiserror = "1.0"
+tui = { version = "0.19", default-features = false, features = ['termion'] }
+
+[features]
+default = []
+alternative_key_binding = []
