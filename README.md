@@ -17,7 +17,7 @@ cd triversi
 cargo install --path .
 ```
 
-If you wanto to use the alternate key bindings, excute the following commands.
+If you want to use the alternate key bindings, excute the following commands.
 
 ```sh
 cd triversi
@@ -42,7 +42,7 @@ Repository: https://github.com/yu1guana/triversi
 ## Key Bindings
 
 Two key bindings are supported.
-If you change key bindings, edit the source code [src/app/key\_binding.rs](src/app/key_binding.rs).
+If you want to change key bindings, edit the source code ([src/app/key\_binding.rs](src/app/key_binding.rs)).
 
 ### Default
 
