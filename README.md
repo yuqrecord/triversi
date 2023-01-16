@@ -61,7 +61,7 @@ Right: Scroll right
 Home: Scroll reset
 +: Zoom in
 -: Zoom out
-b: Bone visibility
+f: Frame visibility
 ```
 
 ### Alternative
@@ -83,7 +83,7 @@ Right: Scroll right
 Home: Scroll reset
 +: Zoom in
 -: Zoom out
-b: Bone visibility
+f: Frame visibility
 ```
 
 ## To-Do list

@@ -91,7 +91,7 @@ impl System {
             current_player,
             message: String::new(),
             message_color: Color::Reset,
-            key_binding_guidance: key_binding::make_guidance(),
+            key_binding_guidance: key_binding::make_guidance_in_turn(),
             current_status: Status::Play(Play::Turn),
             previous_status: Status::Play(Play::Turn),
             board_offset: (0, 0),
@@ -164,7 +164,7 @@ impl System {
             Play::Turn => match key {
                 key_binding::key::QUIT => self.update_status(Status::AskQuit),
                 key_binding::key::INIT => self.update_status(Status::AskInit),
-                key_binding::key::BONE_TOGGLE => self.lattice_board.toggle_bone_visibility(),
+                key_binding::key::FRAME_TOGGLE => self.lattice_board.toggle_frame_visibility(),
                 key_binding::key::MOVE_LEFT => {
                     self.lattice_board.logic_board_mut().move_cursor_left()
                 }
@@ -188,7 +188,7 @@ impl System {
             Play::Skipped => match key {
                 key_binding::key::QUIT => self.update_status(Status::AskQuit),
                 key_binding::key::INIT => self.update_status(Status::AskInit),
-                key_binding::key::BONE_TOGGLE => self.lattice_board.toggle_bone_visibility(),
+                key_binding::key::FRAME_TOGGLE => self.lattice_board.toggle_frame_visibility(),
                 key_binding::key::MOVE_LEFT => {
                     self.lattice_board.logic_board_mut().move_cursor_left()
                 }
@@ -216,7 +216,7 @@ impl System {
             Play::Finished => match key {
                 key_binding::key::QUIT => self.update_status(Status::AskQuit),
                 key_binding::key::INIT => self.update_status(Status::AskInit),
-                key_binding::key::BONE_TOGGLE => self.lattice_board.toggle_bone_visibility(),
+                key_binding::key::FRAME_TOGGLE => self.lattice_board.toggle_frame_visibility(),
                 key_binding::key::MOVE_LEFT => {
                     self.lattice_board.logic_board_mut().move_cursor_left()
                 }
@@ -561,7 +561,6 @@ impl System {
         ) {
             board.push(Spans::from(vec![Span::raw("")]))
         }
-        let lattice_cursor = self.lattice_board.cursor();
         for (y_block, block_row) in self.lattice_board.lattice_board().iter().enumerate() {
             let mut row: Vec<Span> = Vec::new();
             for _ in 0..cmp::max(
@@ -579,7 +578,7 @@ impl System {
                             self.board_offset.0 * self.lattice_board.distance() as i16
                                 + x_block as i16
                                 >= 0
-                                && lattice_cursor == (x_block, y_block),
+                                && self.lattice_board.cursor() == (x_block, y_block),
                         ),
                     )),
                     _ => row.push(Span::raw(format!(

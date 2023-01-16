@@ -1,7 +1,7 @@
 [package]
 name = "triversi"
 authors = ["Yuichi Ishida <yu1guana@gmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
 description = "Triversi: Reversi-like game played by 3 players."
 repository = "https://github.com/yu1guana/triversi"
 license-file = "LICENSE"

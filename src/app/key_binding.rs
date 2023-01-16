@@ -22,7 +22,7 @@ pub mod default {
     pub const SCROLL_LEFT: Key = Key::Left;
     pub const SCROLL_RIGHT: Key = Key::Right;
     pub const SCROLL_RESET: Key = Key::Home;
-    pub const BONE_TOGGLE: Key = Key::Char('b');
+    pub const FRAME_TOGGLE: Key = Key::Char('f');
     pub const ZOOM_IN: Key = Key::Char('+');
     pub const ZOOM_OUT: Key = Key::Char('-');
     pub const QUIT: Key = Key::Char('q');
@@ -42,7 +42,7 @@ pub mod alternative {
     pub const SCROLL_LEFT: Key = Key::Left;
     pub const SCROLL_RIGHT: Key = Key::Right;
     pub const SCROLL_RESET: Key = Key::Home;
-    pub const BONE_TOGGLE: Key = Key::Char('b');
+    pub const FRAME_TOGGLE: Key = Key::Char('f');
     pub const ZOOM_IN: Key = Key::Char('+');
     pub const ZOOM_OUT: Key = Key::Char('-');
     pub const QUIT: Key = Key::Char('q');
@@ -50,8 +50,8 @@ pub mod alternative {
     pub const SELECT: Key = Key::Char('\n');
 }
 
-pub fn make_guidance() -> String {
-    format!(" Quit [{}], Initialize [{}], Select [{}], Move ◀︎/▼/▲/▶︎ [{}/{}/{}/{}], Scroll ◀︎/▼/▲/▶︎/reset [{}/{}/{}/{}/{}], Zoom In/Out [{}/{}], Bone On/Off [{}]",
+pub fn make_guidance_in_turn() -> String {
+    format!(" Quit [{}], Initialize [{}], Select [{}], Move ◀︎/▼/▲/▶︎ [{}/{}/{}/{}], Scroll ◀︎/▼/▲/▶︎/reset [{}/{}/{}/{}/{}], Zoom In/Out [{}/{}], Frame On/Off [{}]",
         change_key_to_str(key::QUIT),
         change_key_to_str(key::INIT),
         change_key_to_str(key::SELECT),
@@ -66,7 +66,7 @@ pub fn make_guidance() -> String {
         change_key_to_str(key::SCROLL_RESET),
         change_key_to_str(key::ZOOM_IN),
         change_key_to_str(key::ZOOM_OUT),
-        change_key_to_str(key::BONE_TOGGLE),
+        change_key_to_str(key::FRAME_TOGGLE),
     )
 }
 

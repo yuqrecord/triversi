@@ -34,7 +34,7 @@ pub struct LatticeBoard {
     distance: usize,
     #[getset(get_copy = "pub")]
     player_mark: PlayerMark,
-    bone_visibility: bool,
+    frame_visibility: bool,
 }
 
 impl fmt::Display for LatticeBoard {
@@ -64,7 +64,7 @@ impl LatticeBoard {
             logic_board: LogicBoard::try_new(range)?,
             distance,
             player_mark,
-            bone_visibility: false,
+            frame_visibility: false,
         };
         lattice_board.init();
         Ok(lattice_board)
@@ -76,8 +76,8 @@ impl LatticeBoard {
         self.reflect_from_logic();
     }
 
-    pub fn toggle_bone_visibility(&mut self) {
-        self.bone_visibility ^= true;
+    pub fn toggle_frame_visibility(&mut self) {
+        self.frame_visibility ^= true;
     }
 
     pub fn zoom_in(&mut self) {
@@ -103,7 +103,7 @@ impl LatticeBoard {
             LatticeBlock::Stone(player) => match player {
                 Some(player) => self.player_mark.convert(player),
                 None => {
-                    if self.bone_visibility {
+                    if self.frame_visibility {
                         ' '
                     } else {
                         '.'
@@ -111,7 +111,7 @@ impl LatticeBoard {
                 }
             },
             LatticeBlock::Bond(bond) => {
-                if self.bone_visibility {
+                if self.frame_visibility {
                     match bond {
                         Bond::LeftDown => '/',
                         Bond::RightDown => '\\',
@@ -214,19 +214,19 @@ impl LatticeBoard {
         }
     }
 
-    fn logic_to_block(&self, logical_position: (usize, usize)) -> (usize, usize) {
-        let x_block = self.distance * (self.logic_board.range() - logical_position.1 - 1)
-            + logical_position.0 * self.distance * 2;
-        let y_block = self.distance * logical_position.1;
+    fn logic_to_block(&self, (x_logic, y_logic): (usize, usize)) -> (usize, usize) {
+        let x_block =
+            self.distance * (self.logic_board.range() - y_logic - 1) + x_logic * self.distance * 2;
+        let y_block = self.distance * y_logic;
         (x_block, y_block)
     }
 
-    fn set_block(&mut self, block_position: (usize, usize), block: LatticeBlock) {
+    fn set_block(&mut self, (x_block, y_block): (usize, usize), block: LatticeBlock) {
         *self
             .lattice_board
-            .get_mut(block_position.1)
+            .get_mut(y_block)
             .unwrap()
-            .get_mut(block_position.0)
+            .get_mut(x_block)
             .unwrap() = block;
     }
 

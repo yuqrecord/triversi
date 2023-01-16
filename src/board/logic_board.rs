@@ -112,25 +112,13 @@ impl AvailableList {
         position: (usize, usize),
         candidate_list: Vec<(usize, usize)>,
     ) {
-        if self
-            .available_list
-            .get_mut(&player)
-            .unwrap()
-            .contains_key(&position)
-        {
-            for candidate in candidate_list {
-                self.available_list
-                    .get_mut(&player)
-                    .unwrap()
-                    .get_mut(&position)
-                    .unwrap()
-                    .insert(candidate);
-            }
-        } else {
-            self.available_list.get_mut(&player).unwrap().insert(
-                (position.0, position.1),
-                candidate_list.into_iter().collect::<HashSet<_>>(),
-            );
+        for candidate in candidate_list {
+            self.available_list
+                .get_mut(&player)
+                .unwrap()
+                .entry(position)
+                .or_insert_with(|| HashSet::from([candidate]))
+                .insert(candidate);
         }
     }
 }
@@ -264,23 +252,18 @@ impl LogicBoard {
         }
     }
 
-    pub fn player(&self, position: (usize, usize)) -> Option<Player> {
-        *self.board.get(position.1).unwrap().get(position.0).unwrap()
+    pub fn player(&self, (x, y): (usize, usize)) -> Option<Player> {
+        *self.board.get(y).unwrap().get(x).unwrap()
     }
 
-    pub fn set_player(&mut self, position: (usize, usize), player: Option<Player>) {
+    pub fn set_player(&mut self, (x, y): (usize, usize), player: Option<Player>) {
         if let Some(player) = player {
             self.count.increment(player);
         }
-        if let Some(player) = self.player(position) {
+        if let Some(player) = self.player((x, y)) {
             self.count.decrement(player);
         }
-        *self
-            .board
-            .get_mut(position.1)
-            .unwrap()
-            .get_mut(position.0)
-            .unwrap() = player;
+        *self.board.get_mut(y).unwrap().get_mut(x).unwrap() = player;
     }
 
     pub fn move_cursor_up(&mut self) {
@@ -301,6 +284,8 @@ impl LogicBoard {
     pub fn move_cursor_left(&mut self) {
         if self.cursor.0 > 0 {
             self.cursor.0 -= 1;
+        } else if self.cursor.1 < self.range - 1 {
+            self.cursor.1 += 1;
         }
     }
 
@@ -340,15 +325,15 @@ impl LogicBoard {
     fn add_available_for_left(
         &self,
         player: Player,
-        position: (usize, usize),
+        (x, y): (usize, usize),
         available_list: &mut AvailableList,
     ) {
         self.add_available(
             player,
-            position,
-            (position.0 - 1, position.1),
-            (0..position.0).rev(),
-            iter::repeat(position.1),
+            (x, y),
+            (x - 1, y),
+            (0..x).rev(),
+            iter::repeat(y),
             available_list,
         );
     }
@@ -356,15 +341,15 @@ impl LogicBoard {
     fn add_available_for_right(
         &self,
         player: Player,
-        position: (usize, usize),
+        (x, y): (usize, usize),
         available_list: &mut AvailableList,
     ) {
         self.add_available(
             player,
-            position,
-            (position.0 + 1, position.1),
-            position.0 + 1..=position.1,
-            iter::repeat(position.1),
+            (x, y),
+            (x + 1, y),
+            x + 1..=y,
+            iter::repeat(y),
             available_list,
         );
     }
@@ -372,15 +357,15 @@ impl LogicBoard {
     fn add_available_for_up(
         &self,
         player: Player,
-        position: (usize, usize),
+        (x, y): (usize, usize),
         available_list: &mut AvailableList,
     ) {
         self.add_available(
             player,
-            position,
-            (position.0, position.1 - 1),
-            iter::repeat(position.0),
-            (position.0..position.1).rev(),
+            (x, y),
+            (x, y - 1),
+            iter::repeat(x),
+            (x..y).rev(),
             available_list,
         );
     }
@@ -388,15 +373,15 @@ impl LogicBoard {
     fn add_available_for_down(
         &self,
         player: Player,
-        position: (usize, usize),
+        (x, y): (usize, usize),
         available_list: &mut AvailableList,
     ) {
         self.add_available(
             player,
-            position,
-            (position.0, position.1 + 1),
-            iter::repeat(position.0),
-            position.1 + 1..self.range,
+            (x, y),
+            (x, y + 1),
+            iter::repeat(x),
+            y + 1..self.range,
             available_list,
         );
     }
@@ -404,15 +389,15 @@ impl LogicBoard {
     fn add_available_for_left_up(
         &self,
         player: Player,
-        position: (usize, usize),
+        (x, y): (usize, usize),
         available_list: &mut AvailableList,
     ) {
         self.add_available(
             player,
-            position,
-            (position.0 - 1, position.1 - 1),
-            (0..position.0).rev(),
-            (position.1 - position.0..position.1).rev(),
+            (x, y),
+            (x - 1, y - 1),
+            (0..x).rev(),
+            (y - x..y).rev(),
             available_list,
         );
     }
@@ -420,15 +405,15 @@ impl LogicBoard {
     fn add_available_for_right_down(
         &self,
         player: Player,
-        position: (usize, usize),
+        (x, y): (usize, usize),
         available_list: &mut AvailableList,
     ) {
         self.add_available(
             player,
-            position,
-            (position.0 + 1, position.1 + 1),
-            position.0 + 1..=self.range - position.1 + position.0 + 1,
-            position.1 + 1..self.range,
+            (x, y),
+            (x + 1, y + 1),
+            x + 1..=self.range + x - y + 1,
+            y + 1..self.range,
             available_list,
         );
     }
