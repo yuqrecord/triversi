@@ -16,11 +16,12 @@
 
 use crate::error::TriversiError;
 use getset::{CopyGetters, Getters, MutGetters};
+use serde_derive::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use std::iter;
 use std::ops::{Deref, DerefMut};
 
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Hash)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Hash, Serialize, Deserialize)]
 pub enum Player {
     #[default]
     One,

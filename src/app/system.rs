@@ -6,6 +6,7 @@
 use crate::app::key_binding;
 use crate::board::{AvailableList, LatticeBlock, LatticeBoard, Player, PlayerMark, PLAYER_LIST};
 use crate::error::TriversiError;
+use crate::history::History;
 use getset::CopyGetters;
 use std::cmp;
 use std::fmt::Write as _;
@@ -41,17 +42,18 @@ struct ColorConfig {
 
 #[derive(CopyGetters)]
 pub struct System {
-    lattice_board: LatticeBoard,
-    message: String,
-    message_color: Color,
-    key_binding_guidance: String,
     current_player: Player,
+    lattice_board: LatticeBoard,
+    available_list: AvailableList,
+    history: History,
     #[getset(get_copy = "pub")]
     current_status: Status,
     previous_status: Status,
+    message: String,
+    message_color: Color,
+    key_binding_guidance: String,
     board_offset: (i16, i16),
     color_config: ColorConfig,
-    available_list: AvailableList,
     #[cfg(debug_assertions)]
     debug_information: String,
 }
@@ -81,14 +83,14 @@ impl System {
         player_mark: PlayerMark,
     ) -> Result<Self, TriversiError> {
         let lattice_board = LatticeBoard::try_new(range, distance, player_mark)?;
-        let current_player = Player::default();
         let mut available_list = AvailableList::default();
         lattice_board
             .logic_board()
             .update_available_list(&mut available_list);
         Ok(Self {
+            history: History::new(lattice_board.logic_board()),
             lattice_board,
-            current_player,
+            current_player: Player::default(),
             message: String::new(),
             message_color: Color::Reset,
             key_binding_guidance: key_binding::make_guidance_in_turn(),
@@ -109,6 +111,7 @@ impl System {
         self.current_status = Status::Play(Play::Turn);
         self.previous_status = Status::Play(Play::Turn);
         self.update_available_list();
+        self.history.init(self.lattice_board.logic_board());
     }
 
     fn clear_message(&mut self) {
@@ -279,6 +282,13 @@ impl System {
                     }
                 }
             } else {
+                self.history.push(
+                    (
+                        self.current_player,
+                        self.lattice_board.logic_board().cursor(),
+                    ),
+                    self.lattice_board.logic_board().board().clone(),
+                );
                 self.current_player.advance();
                 self.clear_message();
                 if self
@@ -434,40 +444,8 @@ impl System {
         self.render_board(frame, play, chunks_2[0]);
         #[cfg(debug_assertions)]
         {
-            self.debug_information.clear();
-            writeln!(self.debug_information, " Play: {:?}\n", play).unwrap();
-            writeln!(
-                &mut self.debug_information,
-                " {:?}",
-                self.lattice_board.logic_board().count()
-            )
-            .unwrap();
-            writeln!(&mut self.debug_information).unwrap();
-            for player in PLAYER_LIST {
-                writeln!(
-                    &mut self.debug_information,
-                    " Available position of Player-{}:",
-                    self.lattice_board.player_mark().convert(*player)
-                )
-                .unwrap();
-                let mut keys = self
-                    .available_list
-                    .get(player)
-                    .unwrap()
-                    .keys()
-                    .collect::<Vec<_>>();
-                keys.sort();
-                for key in keys {
-                    writeln!(
-                        &mut self.debug_information,
-                        " {:?}: {:?}",
-                        key,
-                        self.available_list.get(player).unwrap().get(key).unwrap()
-                    )
-                    .unwrap();
-                }
-                writeln!(&mut self.debug_information).unwrap();
-            }
+            // self.write_debug_info_of_available_position(play);
+            self.write_debug_info_of_history();
             frame.render_widget(
                 Paragraph::new(self.debug_information.as_ref())
                     .block(
@@ -627,5 +605,59 @@ impl System {
             style = style.add_modifier(Modifier::REVERSED);
         }
         style
+    }
+
+    #[cfg(debug_assertions)]
+    #[allow(dead_code)]
+    fn write_debug_info_of_history(&mut self) {
+        self.debug_information.clear();
+        for player_putting in self.history.record().player_putting_list() {
+            writeln!(
+                self.debug_information,
+                " {:?}: {:?}",
+                self.history.current_turn(),
+                player_putting
+            )
+            .unwrap();
+        }
+    }
+
+    #[cfg(debug_assertions)]
+    #[allow(dead_code)]
+    fn write_debug_info_of_available_position(&mut self, play: Play) {
+        self.debug_information.clear();
+        writeln!(self.debug_information, " Play: {:?}\n", play).unwrap();
+        writeln!(
+            &mut self.debug_information,
+            " {:?}",
+            self.lattice_board.logic_board().count()
+        )
+        .unwrap();
+        writeln!(&mut self.debug_information).unwrap();
+        for player in PLAYER_LIST {
+            writeln!(
+                &mut self.debug_information,
+                " Available position of Player-{}:",
+                self.lattice_board.player_mark().convert(*player)
+            )
+            .unwrap();
+            let mut keys = self
+                .available_list
+                .get(player)
+                .unwrap()
+                .keys()
+                .collect::<Vec<_>>();
+            keys.sort();
+            for key in keys {
+                writeln!(
+                    &mut self.debug_information,
+                    " {:?}: {:?}",
+                    key,
+                    self.available_list.get(player).unwrap().get(key).unwrap()
+                )
+                .unwrap();
+            }
+            writeln!(&mut self.debug_information).unwrap();
+        }
     }
 }
