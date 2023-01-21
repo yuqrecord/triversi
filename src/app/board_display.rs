@@ -11,7 +11,7 @@ use crate::app::system::Play;
 use crate::app::ColorConfig;
 use crate::board::{Board, Player};
 use tui::backend::Backend;
-use tui::layout::{Alignment, Constraint, Direction, Layout, Rect};
+use tui::layout::Rect;
 use tui::terminal::Frame;
 
 pub trait BoardDisplay {
@@ -27,6 +27,7 @@ pub trait BoardDisplay {
     fn toggle_frame_visibility(&mut self);
     fn render_scroll_block<B: Backend>(&self, frame: &mut Frame<B>, rect: Rect);
     fn render_zoom_block<B: Backend>(&self, frame: &mut Frame<B>, rect: Rect);
+    #[allow(clippy::too_many_arguments)]
     fn render_board_block<B: Backend>(
         &self,
         frame: &mut Frame<B>,
@@ -37,5 +38,4 @@ pub trait BoardDisplay {
         current_player: Player,
         current_position: (usize, usize),
     );
-    // fn render(&self);
 }

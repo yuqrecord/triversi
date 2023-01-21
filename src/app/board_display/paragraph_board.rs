@@ -9,8 +9,8 @@ use crate::board::{Board, Player};
 use crate::error::TriversiError;
 use std::cmp;
 use tui::backend::Backend;
-use tui::layout::{Alignment, Constraint, Direction, Layout, Rect};
-use tui::style::{Color, Modifier, Style};
+use tui::layout::{Alignment, Rect};
+use tui::style::{Modifier, Style};
 use tui::terminal::Frame;
 use tui::text::{Span, Spans};
 use tui::widgets::{Block, Borders, Paragraph};
@@ -36,8 +36,10 @@ impl TryFrom<String> for PlayerMark {
     fn try_from(s: String) -> Result<Self, Self::Error> {
         let mark_list = s.split(',').collect::<Vec<_>>();
         if mark_list.len() != 3
-            || mark_list.iter().any(|mark| !mark.is_ascii())
-            || mark_list.iter().any(|mark| mark.len() != 1)
+            || mark_list.iter().any(|mark| mark.is_empty())
+            || mark_list
+                .iter()
+                .any(|mark| !mark.chars().next().unwrap().is_ascii())
         {
             return Err(TriversiError::InvalidStringForPlayerMarks(s));
         }
@@ -58,18 +60,25 @@ pub struct ParagraphBoard {
 }
 
 impl ParagraphBoard {
-    pub fn new(distance: usize, player_mark: PlayerMark) -> Self {
-        Self {
+    pub fn try_new(distance: usize, player_names_str: &str) -> Result<Self, TriversiError> {
+        let names = player_names_str.split(',').collect::<Vec<_>>();
+        let player_mark = PlayerMark::try_from(player_names_str.to_owned())?;
+        if names.len() != 3 {
+            return Err(TriversiError::InvalidStringForPlayerNames(
+                player_names_str.to_owned(),
+            ));
+        }
+        Ok(Self {
             distance,
             offset: (0, 0),
             player_mark,
             player_name: (
-                player_mark.0.to_string(),
-                player_mark.1.to_string(),
-                player_mark.2.to_string(),
+                names.first().unwrap().to_string(),
+                names.get(1).unwrap().to_string(),
+                names.get(2).unwrap().to_string(),
             ),
             frame_visibility: false,
-        }
+        })
     }
 
     fn cell_position(&self, board: &Board, (x, y): (usize, usize)) -> (usize, usize) {

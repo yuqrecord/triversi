@@ -13,4 +13,6 @@ pub enum TriversiError {
     InvalidBoardDistance(usize),
     #[error("{0} is an invalid string to get player marks.")]
     InvalidStringForPlayerMarks(String),
+    #[error("{0} is an invalid string to get player names.")]
+    InvalidStringForPlayerNames(String),
 }

@@ -3,13 +3,12 @@
 // Released under the MIT license.
 // see https://opensource.org/licenses/mit-license.php
 
-use crate::app::board_display::{BoardDisplay, ParagraphBoard};
+use crate::app::board_display::BoardDisplay;
 use crate::app::key_binding;
 use crate::app::ColorConfig;
 use crate::board::{Availables, Board, History, Player, PLAYERS};
 use crate::error::TriversiError;
 use getset::CopyGetters;
-use std::cmp;
 use std::fmt::Write as _;
 use termion::event::Key;
 use tui::backend::Backend;

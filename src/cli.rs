@@ -13,11 +13,9 @@ use clap::Parser;
 impl Cli {
     pub fn run() -> Result<()> {
         let arg = Cli::parse();
-        let paragraph_board = ParagraphBoard::new(arg.distance, arg.player_marks.try_into()?);
+        let paragraph_board = ParagraphBoard::try_new(arg.distance, &arg.player_names)?;
         let board = Board::try_new(arg.range)?;
-        // let mut system = System::try_new(arg.range, arg.distance, arg.player_marks.try_into()?)?;
         let mut system = System::try_new(board, paragraph_board)?;
-        // You should NOT construct other object after constructing Tui in order to display error message correctly.
         let mut tui = Tui::try_new()?;
         tui.run(&mut system)?;
         Ok(())
@@ -46,8 +44,8 @@ pub struct Cli {
     #[clap(
         short,
         long,
-        default_value = "1,2,3",
+        default_value = "Cyan,Magenta,Yellow",
         help = "Marks of each player (ascii characters, delimiters are ','), "
     )]
-    player_marks: String,
+    player_names: String,
 }
