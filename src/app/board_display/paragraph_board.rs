@@ -24,9 +24,9 @@ impl PlayerMark {
     // }
     fn convert(&self, player: Player) -> char {
         match player {
-            Player::One => self.0,
-            Player::Two => self.1,
-            Player::Three => self.2,
+            Player::Zero => self.0,
+            Player::One => self.1,
+            Player::Two => self.2,
         }
     }
 }
@@ -360,9 +360,9 @@ impl BoardDisplay for ParagraphBoard {
 
     fn player_name(&self, player: Player) -> &str {
         match player {
-            Player::One => &self.player_name.0,
-            Player::Two => &self.player_name.1,
-            Player::Three => &self.player_name.2,
+            Player::Zero => &self.player_name.0,
+            Player::One => &self.player_name.1,
+            Player::Two => &self.player_name.2,
         }
     }
 

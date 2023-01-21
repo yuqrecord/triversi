@@ -45,7 +45,7 @@ pub struct Cli {
         short,
         long,
         default_value = "Cyan,Magenta,Yellow",
-        help = "Marks of each player (ascii characters, delimiters are ','), "
+        help = "Marks of each player (delimiters are ','), "
     )]
     player_names: String,
 }

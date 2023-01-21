@@ -67,40 +67,40 @@ impl Board {
         self.count.reset();
         match self.range % 3 {
             0 => {
-                // Player 1
-                let player = Some(Player::One);
+                // Player 0
+                let player = Some(Player::Zero);
                 self.set_player((self.range / 3, 2 * self.range / 3), player);
                 self.set_player((self.range / 3 + 1, 2 * self.range / 3 - 1), player);
                 self.set_player((self.range / 3 - 1, 2 * self.range / 3 - 2), player);
                 self.set_player((self.range / 3 - 2, 2 * self.range / 3 - 1), player);
-                // Player 2
-                let player = Some(Player::Two);
+                // Player 1
+                let player = Some(Player::One);
                 self.set_player((self.range / 3, 2 * self.range / 3 - 1), player);
                 self.set_player((self.range / 3 - 2, 2 * self.range / 3 - 2), player);
                 self.set_player((self.range / 3 - 1, 2 * self.range / 3), player);
                 self.set_player((self.range / 3 + 1, 2 * self.range / 3 + 1), player);
-                // Player 3
-                let player = Some(Player::Three);
+                // Player 2
+                let player = Some(Player::Two);
                 self.set_player((self.range / 3 - 1, 2 * self.range / 3 - 1), player);
                 self.set_player((self.range / 3, 2 * self.range / 3 + 1), player);
                 self.set_player((self.range / 3 + 1, 2 * self.range / 3), player);
                 self.set_player((self.range / 3, 2 * self.range / 3 - 2), player);
             }
             2 => {
-                // Player 1
-                let player = Some(Player::One);
+                // Player 0
+                let player = Some(Player::Zero);
                 self.set_player(((self.range - 2) / 3, (2 * self.range - 4) / 3), player);
                 self.set_player(((self.range - 5) / 3, (2 * self.range - 1) / 3), player);
                 self.set_player(((self.range + 1) / 3, (2 * self.range + 2) / 3), player);
                 self.set_player(((self.range + 4) / 3, (2 * self.range - 1) / 3), player);
-                // Player 2
-                let player = Some(Player::Two);
+                // Player 1
+                let player = Some(Player::One);
                 self.set_player(((self.range - 2) / 3, (2 * self.range - 1) / 3), player);
                 self.set_player(((self.range + 4) / 3, (2 * self.range + 2) / 3), player);
                 self.set_player(((self.range + 1) / 3, (2 * self.range - 4) / 3), player);
                 self.set_player(((self.range - 5) / 3, (2 * self.range - 7) / 3), player);
-                // Player 3
-                let player = Some(Player::Three);
+                // Player 2
+                let player = Some(Player::Two);
                 self.set_player(((self.range + 1) / 3, (2 * self.range - 1) / 3), player);
                 self.set_player(((self.range - 2) / 3, (2 * self.range - 7) / 3), player);
                 self.set_player(((self.range - 5) / 3, (2 * self.range - 4) / 3), player);

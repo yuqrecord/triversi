@@ -8,19 +8,19 @@ use serde_derive::{Deserialize, Serialize};
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Hash, Serialize, Deserialize)]
 pub enum Player {
     #[default]
+    Zero,
     One,
     Two,
-    Three,
 }
 
-pub const PLAYERS: &[Player] = &[Player::One, Player::Two, Player::Three];
+pub const PLAYERS: &[Player] = &[Player::Zero, Player::One, Player::Two];
 
 impl Player {
     pub fn advance(&mut self) {
         match self {
+            Player::Zero => *self = Player::One,
             Player::One => *self = Player::Two,
-            Player::Two => *self = Player::Three,
-            Player::Three => *self = Player::One,
+            Player::Two => *self = Player::Zero,
         }
     }
 }

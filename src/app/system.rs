@@ -157,10 +157,26 @@ impl<D: BoardDisplay> System<D> {
                 key_binding::key::SCROLL_RESET => self.board_display.scroll_reset(),
                 key_binding::key::ZOOM_IN => self.board_display.zoom_in(),
                 key_binding::key::ZOOM_OUT => self.board_display.zoom_out(),
+                key_binding::key::INTO_HISTORY => self.update_status(Status::Play(Play::History)),
                 key_binding::key::SELECT => self.select_in_play_turn(),
                 _ => (),
             },
-            Play::History => todo!(),
+            Play::History => match key {
+                key_binding::key::QUIT => self.update_status(Status::AskQuit),
+                key_binding::key::INIT => self.update_status(Status::AskInit),
+                key_binding::key::PREV_HISTORY | key_binding::key::NEXT_HISTORY => {
+                    self.history_move(key)
+                }
+                key_binding::key::SCROLL_LEFT => self.board_display.scroll_left(),
+                key_binding::key::SCROLL_RIGHT => self.board_display.scroll_right(),
+                key_binding::key::SCROLL_UP => self.board_display.scroll_up(),
+                key_binding::key::SCROLL_DOWN => self.board_display.scroll_down(),
+                key_binding::key::SCROLL_RESET => self.board_display.scroll_reset(),
+                key_binding::key::ZOOM_IN => self.board_display.zoom_in(),
+                key_binding::key::ZOOM_OUT => self.board_display.zoom_out(),
+                key_binding::key::SELECT => self.update_status(Status::Play(Play::Turn)),
+                _ => (),
+            },
             Play::Skipped => match key {
                 key_binding::key::QUIT => self.update_status(Status::AskQuit),
                 key_binding::key::INIT => self.update_status(Status::AskInit),
@@ -184,6 +200,7 @@ impl<D: BoardDisplay> System<D> {
                 key_binding::key::SCROLL_RESET => self.board_display.scroll_reset(),
                 key_binding::key::ZOOM_IN => self.board_display.zoom_in(),
                 key_binding::key::ZOOM_OUT => self.board_display.zoom_out(),
+                key_binding::key::INTO_HISTORY => self.update_status(Status::Play(Play::History)),
                 key_binding::key::SELECT => self.select_in_play_skip(),
                 _ => (),
             },
@@ -210,6 +227,7 @@ impl<D: BoardDisplay> System<D> {
                 key_binding::key::SCROLL_RESET => self.board_display.scroll_reset(),
                 key_binding::key::ZOOM_IN => self.board_display.zoom_in(),
                 key_binding::key::ZOOM_OUT => self.board_display.zoom_out(),
+                key_binding::key::INTO_HISTORY => self.update_status(Status::Play(Play::History)),
                 _ => (),
             },
         }
@@ -228,6 +246,10 @@ impl<D: BoardDisplay> System<D> {
                 .values()
                 .all(|available| available.is_empty())
             {
+                self.history.push(
+                    (self.current_player, self.current_position),
+                    self.board.clone(),
+                );
                 self.update_status(Status::Play(Play::Finished));
                 self.clear_message();
                 self.board.count();
@@ -239,7 +261,7 @@ impl<D: BoardDisplay> System<D> {
                     }
                     write!(
                         self.message,
-                        " Player-{} = {}",
+                        " {} = {}",
                         self.board_display.player_name(*player),
                         self.board.count().get(player).unwrap(),
                     )
@@ -306,6 +328,22 @@ impl<D: BoardDisplay> System<D> {
         } else {
             self.update_status(Status::Play(Play::Turn));
         }
+    }
+
+    fn history_move(&mut self, key: Key) {
+        if key == key_binding::key::PREV_HISTORY {
+            self.history.go_prev();
+        } else {
+            self.history.go_next();
+        }
+        self.board = self.history.board().clone();
+        if self.history.past_player().is_some() {
+            self.current_player = self.history.past_player().unwrap();
+        }
+        if self.history.past_position().is_some() {
+            self.current_position = self.history.past_position().unwrap();
+        }
+        self.update_available_list();
     }
 
     fn ask_quit(&mut self, key: Key) {
@@ -544,14 +582,14 @@ impl<D: BoardDisplay> System<D> {
     #[allow(dead_code)]
     fn write_debug_info_of_history(&mut self) {
         self.debug_information.clear();
+        writeln!(
+            self.debug_information,
+            " Turn {}",
+            self.history.current_turn(),
+        )
+        .unwrap();
         for player_putting in self.history.record().player_positions() {
-            writeln!(
-                self.debug_information,
-                " {:?}: {:?}",
-                self.history.current_turn(),
-                player_putting
-            )
-            .unwrap();
+            writeln!(self.debug_information, " {:?}", player_putting).unwrap();
         }
     }
 

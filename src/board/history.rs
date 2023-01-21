@@ -66,15 +66,33 @@ impl History {
         self.boards.push(board);
     }
 
+    pub fn go_prev(&mut self) {
+        if self.current_turn != 0 {
+            self.current_turn -= 1;
+        }
+    }
+
     pub fn go_next(&mut self) {
         if self.current_turn != self.boards.len() - 1 {
             self.current_turn += 1;
         }
     }
 
-    pub fn go_prev(&mut self) {
-        if self.current_turn != 0 {
-            self.current_turn -= 1;
-        }
+    pub fn past_position(&self) -> Option<(usize, usize)> {
+        self.record
+            .player_positions
+            .get(self.current_turn)
+            .map(|player_position| player_position.1)
+    }
+
+    pub fn past_player(&self) -> Option<Player> {
+        self.record
+            .player_positions
+            .get(self.current_turn)
+            .map(|player_position| player_position.0)
+    }
+
+    pub fn board(&self) -> &Board {
+        self.boards.get(self.current_turn).unwrap()
     }
 }

@@ -38,9 +38,9 @@ impl DerefMut for Count {
 
 impl Count {
     pub fn reset(&mut self) {
-        *self.count.get_mut(&Player::One).unwrap() = 0;
-        *self.count.get_mut(&Player::Two).unwrap() = 0;
-        *self.count.get_mut(&Player::Three).unwrap() = 0;
+        for player in PLAYERS.iter() {
+            *self.count.get_mut(player).unwrap() = 0;
+        }
     }
     pub fn increment(&mut self, player: Player) {
         *self.count.get_mut(&player).unwrap() += 1;

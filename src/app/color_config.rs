@@ -23,9 +23,9 @@ impl Default for ColorConfig {
 impl ColorConfig {
     pub fn player(&self, player: Player) -> Color {
         match player {
-            Player::One => self.player.0,
-            Player::Two => self.player.1,
-            Player::Three => self.player.2,
+            Player::Zero => self.player.0,
+            Player::One => self.player.1,
+            Player::Two => self.player.2,
         }
     }
 }

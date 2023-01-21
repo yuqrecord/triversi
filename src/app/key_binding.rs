@@ -24,8 +24,8 @@ pub mod default {
     pub const SCROLL_RESET: Key = Key::Home;
     pub const FRAME_TOGGLE: Key = Key::Char('f');
     pub const INTO_HISTORY: Key = Key::Char('t');
-    pub const PREV_HISTORY: Key = Key::Left;
-    pub const NEXT_HISTORY: Key = Key::Right;
+    pub const PREV_HISTORY: Key = Key::Char('p');
+    pub const NEXT_HISTORY: Key = Key::Char('n');
     pub const ZOOM_IN: Key = Key::Char('+');
     pub const ZOOM_OUT: Key = Key::Char('-');
     pub const QUIT: Key = Key::Char('q');
@@ -47,8 +47,8 @@ pub mod alternative {
     pub const SCROLL_RESET: Key = Key::Home;
     pub const FRAME_TOGGLE: Key = Key::Char('f');
     pub const INTO_HISTORY: Key = Key::Char('h');
-    pub const PREV_HISTORY: Key = Key::Left;
-    pub const NEXT_HISTORY: Key = Key::Right;
+    pub const PREV_HISTORY: Key = Key::Char('p');
+    pub const NEXT_HISTORY: Key = Key::Char('n');
     pub const ZOOM_IN: Key = Key::Char('+');
     pub const ZOOM_OUT: Key = Key::Char('-');
     pub const QUIT: Key = Key::Char('q');
