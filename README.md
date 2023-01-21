@@ -13,15 +13,13 @@ In order to install Triversi, execute the following commands
 (refer to [this site](https://doc.rust-lang.org/cargo/commands/cargo-install.html)).
 
 ```sh
-cd triversi
-cargo install --path .
+cargo install --git https://github.com/yu1guana/triversi
 ```
 
 If you want to use the alternate key bindings, excute the following commands.
 
 ```sh
-cd triversi
-cargo install --path . --features alternative_key_binding
+cargo install --git https://github.com/yu1guana/triversi --features alternative_key_binding
 ```
 
 ## Usage
