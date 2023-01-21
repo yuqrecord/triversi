@@ -7,4 +7,3 @@ pub mod app;
 pub mod board;
 pub mod cli;
 pub mod error;
-pub mod history;

@@ -64,6 +64,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "derive-new"
+version = "0.5.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3418329ca0ad70234b9735dc4ceed10af4df60eff9c8e7b06cb5e520d92c3535"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "errno"
 version = "0.2.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -330,12 +341,14 @@ version = "0.2.0"
 dependencies = [
  "anyhow",
  "clap",
+ "derive-new",
  "getset",
  "serde",
  "serde_derive",
  "termion 2.0.1",
  "thiserror",
  "tui",
+ "unicode-width",
 ]
 
 [[package]]

@@ -3,7 +3,9 @@
 // Released under the MIT license.
 // see https://opensource.org/licenses/mit-license.php
 
-use crate::app::{Status, System};
+// use crate::app::{Status, System};
+use crate::app::board_display::BoardDisplay;
+use crate::app::system::{Status, System};
 use std::io;
 use std::io::Stdout;
 use termion::input::TermRead;
@@ -26,7 +28,7 @@ impl Tui<TermionBackend<AlternateScreen<RawTerminal<Stdout>>>> {
         Ok(Self { terminal })
     }
 
-    pub fn run(&mut self, app: &mut System) -> anyhow::Result<()> {
+    pub fn run<D: BoardDisplay>(&mut self, app: &mut System<D>) -> anyhow::Result<()> {
         self.terminal.draw(|frame| app.ui(frame))?;
         while let Some(Ok(key)) = io::stdin().keys().next() {
             app.transition(key);
