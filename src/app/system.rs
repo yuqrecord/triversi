@@ -526,31 +526,20 @@ impl<D: BoardDisplay> System<D> {
                     Style::default().add_modifier(Modifier::DIM),
                 ))
             } else {
-                player_names.push(Span::raw(if players_iter.peek().is_none() {
-                    self.board_display.player_name(*player).to_owned()
-                } else {
-                    format!("{} ", self.board_display.player_name(*player))
-                }))
+                player_names.push(Span::styled(
+                    if players_iter.peek().is_none() {
+                        self.board_display.player_name(*player).to_owned()
+                    } else {
+                        format!("{} ", self.board_display.player_name(*player))
+                    },
+                    Style::default().fg(self.color_config.player(*player)),
+                ))
             }
         }
         frame.render_widget(
-            Paragraph::new(Spans::from(
-                PLAYERS
-                    .iter()
-                    .map(|&player| {
-                        if player != self.current_player && play != Play::Finished {
-                            Span::styled(
-                                format!(" {}", self.board_display.player_name(player)),
-                                Style::default().add_modifier(Modifier::DIM),
-                            )
-                        } else {
-                            Span::raw(format!(" {}", self.board_display.player_name(player)))
-                        }
-                    })
-                    .collect::<Vec<_>>(),
-            ))
-            .alignment(Alignment::Center)
-            .block(Block::default().borders(Borders::ALL).title("Player")),
+            Paragraph::new(Spans::from(player_names))
+                .alignment(Alignment::Center)
+                .block(Block::default().borders(Borders::ALL).title("Player")),
             rect,
         );
     }
