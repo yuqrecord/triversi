@@ -91,12 +91,12 @@ impl Board {
                 let player = Some(Player::Zero);
                 self.set_player(((self.range - 2) / 3, (2 * self.range - 4) / 3), player);
                 self.set_player(((self.range - 5) / 3, (2 * self.range - 1) / 3), player);
-                self.set_player(((self.range + 1) / 3, (2 * self.range + 2) / 3), player);
+                self.set_player(((self.range + 1) / 3, (2 * self.range).div_ceil(3)), player);
                 self.set_player(((self.range + 4) / 3, (2 * self.range - 1) / 3), player);
                 // Player 1
                 let player = Some(Player::One);
                 self.set_player(((self.range - 2) / 3, (2 * self.range - 1) / 3), player);
-                self.set_player(((self.range + 4) / 3, (2 * self.range + 2) / 3), player);
+                self.set_player(((self.range + 4) / 3, (2 * self.range).div_ceil(3)), player);
                 self.set_player(((self.range + 1) / 3, (2 * self.range - 4) / 3), player);
                 self.set_player(((self.range - 5) / 3, (2 * self.range - 7) / 3), player);
                 // Player 2
@@ -104,7 +104,7 @@ impl Board {
                 self.set_player(((self.range + 1) / 3, (2 * self.range - 1) / 3), player);
                 self.set_player(((self.range - 2) / 3, (2 * self.range - 7) / 3), player);
                 self.set_player(((self.range - 5) / 3, (2 * self.range - 4) / 3), player);
-                self.set_player(((self.range - 2) / 3, (2 * self.range + 2) / 3), player);
+                self.set_player(((self.range - 2) / 3, (2 * self.range).div_ceil(3)), player);
             }
             _ => (),
         }
