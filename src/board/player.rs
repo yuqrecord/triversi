@@ -3,9 +3,7 @@
 // Released under the MIT license.
 // see https://opensource.org/licenses/mit-license.php
 
-use serde_derive::{Deserialize, Serialize};
-
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Hash)]
 pub enum Player {
     #[default]
     Zero,
