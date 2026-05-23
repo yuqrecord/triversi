@@ -21,6 +21,7 @@ pub struct History {
     #[getset(get = "pub")]
     record: Record,
     boards: Vec<Board>,
+    next_player: Player,
 }
 
 impl Record {
@@ -46,6 +47,7 @@ impl History {
             current_turn: 0,
             record: Record::new(board.range()),
             boards: vec![board],
+            next_player: Player::default(),
         }
     }
 
@@ -54,6 +56,11 @@ impl History {
         self.record.init();
         self.boards.clear();
         self.boards.push(board);
+        self.next_player = Player::default();
+    }
+
+    pub fn set_next_player(&mut self, player: Player) {
+        self.next_player = player;
     }
 
     pub fn push(&mut self, player_position: (Player, (usize, usize)), board: Board) {
@@ -90,6 +97,10 @@ impl History {
             .player_positions
             .get(self.current_turn)
             .map(|player_position| player_position.0)
+    }
+
+    pub fn current_player(&self) -> Player {
+        self.past_player().unwrap_or(self.next_player)
     }
 
     pub fn board(&self) -> &Board {
