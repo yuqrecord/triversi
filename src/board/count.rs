@@ -46,6 +46,7 @@ impl Count {
         *self.count.get_mut(&player).unwrap() += 1;
     }
     pub fn decrement(&mut self, player: Player) {
-        *self.count.get_mut(&player).unwrap() -= 1;
+        let count = self.count.get_mut(&player).unwrap();
+        *count = count.saturating_sub(1);
     }
 }

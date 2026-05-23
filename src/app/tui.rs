@@ -3,7 +3,6 @@
 // Released under the MIT license.
 // see https://opensource.org/licenses/mit-license.php
 
-// use crate::app::{Status, System};
 use crate::app::board_display::BoardDisplay;
 use crate::app::system::{Status, System};
 use std::io;
