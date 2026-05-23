@@ -138,7 +138,7 @@ impl Board {
         (0, 0)
     }
 
-    pub fn move_position_up(&mut self, (ref mut x, ref mut y): &mut (usize, usize)) {
+    pub fn move_position_up(&mut self, (x, y): &mut (usize, usize)) {
         if *y > 0 {
             *y -= 1;
             if x > y {
@@ -147,13 +147,13 @@ impl Board {
         }
     }
 
-    pub fn move_position_down(&mut self, (_, ref mut y): &mut (usize, usize)) {
+    pub fn move_position_down(&mut self, (_, y): &mut (usize, usize)) {
         if *y < self.range - 1 {
             *y += 1;
         }
     }
 
-    pub fn move_position_left(&mut self, (ref mut x, ref mut y): &mut (usize, usize)) {
+    pub fn move_position_left(&mut self, (x, y): &mut (usize, usize)) {
         if *x > 0 {
             *x -= 1;
         } else if *y < self.range - 1 {
@@ -161,7 +161,7 @@ impl Board {
         }
     }
 
-    pub fn move_position_right(&mut self, (ref mut x, ref mut y): &mut (usize, usize)) {
+    pub fn move_position_right(&mut self, (x, y): &mut (usize, usize)) {
         if *x < self.range - 1 {
             *x += 1;
             if x > y {
