@@ -3,12 +3,68 @@
 // Released under the MIT license.
 // see https://opensource.org/licenses/mit-license.php
 
+use crate::game::Action;
 use termion::event::Key;
 
 #[cfg(feature = "alternative_key_binding")]
 pub use alternative as key;
 #[cfg(not(feature = "alternative_key_binding"))]
 pub use default as key;
+
+/// View-only commands handled by the TUI layer (not the game core).
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum ViewAction {
+    ScrollLeft,
+    ScrollRight,
+    ScrollUp,
+    ScrollDown,
+    ScrollReset,
+    ZoomIn,
+    ZoomOut,
+    ToggleFrame,
+}
+
+/// Map a key pressed in an Ask dialog to a game action: `Y` confirms,
+/// everything else cancels (preserving the original behavior).
+pub fn confirmation_action(key: Key) -> Action {
+    if key == Key::Char('Y') {
+        Action::Confirm
+    } else {
+        Action::Cancel
+    }
+}
+
+/// Map a key to a view-only action, if any.
+pub fn view_action(key: Key) -> Option<ViewAction> {
+    Some(match key {
+        key::SCROLL_LEFT => ViewAction::ScrollLeft,
+        key::SCROLL_RIGHT => ViewAction::ScrollRight,
+        key::SCROLL_UP => ViewAction::ScrollUp,
+        key::SCROLL_DOWN => ViewAction::ScrollDown,
+        key::SCROLL_RESET => ViewAction::ScrollReset,
+        key::ZOOM_IN => ViewAction::ZoomIn,
+        key::ZOOM_OUT => ViewAction::ZoomOut,
+        key::FRAME_TOGGLE => ViewAction::ToggleFrame,
+        _ => return None,
+    })
+}
+
+/// Map a key to an abstract game action, if any.
+pub fn game_action(key: Key) -> Option<Action> {
+    Some(match key {
+        key::QUIT => Action::RequestQuit,
+        key::INIT => Action::RequestInit,
+        key::MOVE_LEFT => Action::MoveLeft,
+        key::MOVE_RIGHT => Action::MoveRight,
+        key::MOVE_UP => Action::MoveUp,
+        key::MOVE_DOWN => Action::MoveDown,
+        key::INTO_HISTORY => Action::EnterHistory,
+        key::SELECT => Action::Select,
+        key::PREV_HISTORY => Action::HistoryPrev,
+        key::NEXT_HISTORY => Action::HistoryNext,
+        _ => return None,
+    })
+}
 
 #[cfg(not(feature = "alternative_key_binding"))]
 pub mod default {

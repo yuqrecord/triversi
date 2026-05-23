@@ -3,21 +3,22 @@
 // Released under the MIT license.
 // see https://opensource.org/licenses/mit-license.php
 
-use crate::app::board_display::{BoardDisplay, ParagraphBoard};
-use crate::app::system::System;
-use crate::app::tui::Tui;
 use crate::board::Board;
+use crate::game::Game;
+use crate::tui_app::board_display::{BoardDisplay, ParagraphBoard};
+use crate::tui_app::{ColorConfig, Tui};
 use anyhow::Result;
 use clap::Parser;
 
 impl Cli {
     pub fn run() -> Result<()> {
         let arg = Cli::parse();
-        let paragraph_board = ParagraphBoard::try_new(arg.distance, &arg.player_names)?;
+        let display = ParagraphBoard::try_new(arg.distance, &arg.player_names)?;
         let board = Board::try_new(arg.range)?;
-        let mut system = System::try_new(board, paragraph_board)?;
+        let game = Game::try_new(board, &arg.player_names)?;
+        let color_config = ColorConfig::default();
         let mut tui = Tui::try_new()?;
-        tui.run(&mut system)?;
+        tui.run(game, display, color_config)?;
         Ok(())
     }
 }
