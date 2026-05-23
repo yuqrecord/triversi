@@ -19,9 +19,6 @@ use tui::widgets::{Block, Borders, Paragraph};
 pub struct PlayerMark(char, char, char);
 
 impl PlayerMark {
-    // fn new(mark_0: char, mark_1: char, mark_2: char) -> Self {
-    //     Self(mark_0, mark_1, mark_2)
-    // }
     fn convert(&self, player: Player) -> char {
         match player {
             Player::Zero => self.0,
@@ -61,6 +58,9 @@ pub struct ParagraphBoard {
 
 impl ParagraphBoard {
     pub fn try_new(distance: usize, player_names_str: &str) -> Result<Self, TriversiError> {
+        if !(2..=<Self as BoardDisplay>::MAX_DISTANCE).contains(&distance) {
+            return Err(TriversiError::InvalidBoardDistance(distance));
+        }
         let names = player_names_str.split(',').collect::<Vec<_>>();
         let player_mark = PlayerMark::try_from(player_names_str.to_owned())?;
         if names.len() != 3 {
@@ -139,11 +139,11 @@ impl ParagraphBoard {
             let mut line =
                 Vec::with_capacity(net_offset_x + 2 * self.distance * (board.range() - 1) + 1);
             line.extend(vec![
-                Span::raw(format!("{}", self.cell_none()));
+                Span::raw(self.cell_none().to_string());
                 net_offset_x
             ]);
             line.extend(vec![
-                Span::raw(format!("{}", self.cell_background()));
+                Span::raw(self.cell_background().to_string());
                 2 * self.distance * (board.range() - 1) + 1
             ]);
             board_cells.push(Spans::from(line))
@@ -176,7 +176,7 @@ impl ParagraphBoard {
                     .step_by(2 * self.distance)
                     .take(i_row + 1)
                 {
-                    *cell = Span::raw(format!("{}", self.cell_bottom_frame()));
+                    *cell = Span::raw(self.cell_bottom_frame().to_string());
                 }
             }
         }
@@ -205,7 +205,7 @@ impl ParagraphBoard {
                     .step_by(2 * self.distance)
                     .take(i_row + 1)
                 {
-                    *cell = Span::raw(format!("{}", self.cell_left_frame()));
+                    *cell = Span::raw(self.cell_left_frame().to_string());
                 }
             }
         }
@@ -235,7 +235,7 @@ impl ParagraphBoard {
                     .step_by(2 * self.distance)
                     .take(i_row + 1)
                 {
-                    *cell = Span::raw(format!("{}", self.cell_right_frame()));
+                    *cell = Span::raw(self.cell_right_frame().to_string());
                 }
             }
         }
@@ -268,7 +268,7 @@ impl ParagraphBoard {
             {
                 let player = board.player((i_col, i_row));
                 *cell = Span::styled(
-                    format!("{}", self.cell_player(player)),
+                    self.cell_player(player).to_string(),
                     self.make_player_style(
                         board,
                         net_scroll,
@@ -311,21 +311,21 @@ impl ParagraphBoard {
         board_cells
     }
 
-    fn make_boarder_style(
+    fn make_border_style(
         &self,
         color_config: ColorConfig,
         play: Play,
         current_player: Player,
     ) -> Style {
-        let mut boarder_style_of_board = Style::default();
+        let mut border_style_of_board = Style::default();
         match play {
             Play::Finished | Play::History => (),
             _ => {
-                boarder_style_of_board =
-                    boarder_style_of_board.fg(color_config.player(current_player))
+                border_style_of_board =
+                    border_style_of_board.fg(color_config.player(current_player))
             }
         }
-        boarder_style_of_board
+        border_style_of_board
     }
 
     #[allow(clippy::too_many_arguments)]
@@ -446,7 +446,7 @@ impl BoardDisplay for ParagraphBoard {
                     Block::default()
                         .borders(Borders::ALL)
                         .title("Board")
-                        .border_style(self.make_boarder_style(color_config, play, current_player)),
+                        .border_style(self.make_border_style(color_config, play, current_player)),
                 ),
             rect,
         );

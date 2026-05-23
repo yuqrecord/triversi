@@ -288,7 +288,7 @@ impl<D: BoardDisplay> System<D> {
                 {
                     self.update_status(Status::Play(Play::Skipped));
                     self.message_color = Color::Red;
-                    write!(self.message, " Player-{}: Your turn is skipped, you cannot select any position. Pless [{}].",
+                    write!(self.message, " Player-{}: Your turn is skipped, you cannot select any position. Press [{}].",
                         self.board_display.player_name(self.current_player),
                         key_binding::change_key_to_str(key_binding::key::SELECT)
                     ).unwrap();
@@ -322,7 +322,7 @@ impl<D: BoardDisplay> System<D> {
             self.message_color = Color::Red;
             write!(
                 self.message,
-                " Player-{}: Your turn is skipped, you cannot select any position. Pless [{}].",
+                " Player-{}: Your turn is skipped, you cannot select any position. Press [{}].",
                 self.board_display.player_name(self.current_player),
                 key_binding::change_key_to_str(key_binding::key::SELECT)
             )
@@ -439,7 +439,6 @@ impl<D: BoardDisplay> System<D> {
         );
         #[cfg(debug_assertions)]
         {
-            // self.write_debug_info_of_available_position(play);
             self.write_debug_info_of_history();
             frame.render_widget(
                 Paragraph::new(self.debug_information.as_ref())
@@ -568,7 +567,6 @@ impl<D: BoardDisplay> System<D> {
     }
 
     #[cfg(debug_assertions)]
-    #[allow(dead_code)]
     fn write_debug_info_of_history(&mut self) {
         self.debug_information.clear();
         writeln!(
@@ -579,40 +577,6 @@ impl<D: BoardDisplay> System<D> {
         .unwrap();
         for player_putting in self.history.record().player_positions() {
             writeln!(self.debug_information, " {:?}", player_putting).unwrap();
-        }
-    }
-
-    #[cfg(debug_assertions)]
-    #[allow(dead_code)]
-    fn write_debug_info_of_available_position(&mut self, play: Play) {
-        self.debug_information.clear();
-        writeln!(self.debug_information, " Play: {:?}\n", play).unwrap();
-        writeln!(&mut self.debug_information, " {:?}", self.board.count()).unwrap();
-        writeln!(&mut self.debug_information).unwrap();
-        for player in PLAYERS {
-            writeln!(
-                &mut self.debug_information,
-                " Available position of Player-{}:",
-                self.board_display.player_name(*player)
-            )
-            .unwrap();
-            let mut keys = self
-                .availables
-                .get(player)
-                .unwrap()
-                .keys()
-                .collect::<Vec<_>>();
-            keys.sort();
-            for key in keys {
-                writeln!(
-                    &mut self.debug_information,
-                    " {:?}: {:?}",
-                    key,
-                    self.availables.get(player).unwrap().get(key).unwrap()
-                )
-                .unwrap();
-            }
-            writeln!(&mut self.debug_information).unwrap();
         }
     }
 }

@@ -32,7 +32,7 @@ pub trait BoardDisplay {
         &self,
         frame: &mut Frame<B>,
         rect: Rect,
-        boad: &Board,
+        board: &Board,
         color_config: ColorConfig,
         play: Play,
         current_player: Player,
