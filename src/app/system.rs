@@ -278,6 +278,7 @@ impl<D: BoardDisplay> System<D> {
                     self.board.clone(),
                 );
                 self.current_player.advance();
+                self.history.set_next_player(self.current_player);
                 self.clear_message();
                 if self
                     .availables
@@ -310,6 +311,7 @@ impl<D: BoardDisplay> System<D> {
     fn select_in_play_skip(&mut self) {
         self.clear_message();
         self.current_player.advance();
+        self.history.set_next_player(self.current_player);
         if self
             .availables
             .get(&self.current_player)
@@ -337,9 +339,7 @@ impl<D: BoardDisplay> System<D> {
             self.history.go_next();
         }
         self.board = self.history.board().clone();
-        if self.history.past_player().is_some() {
-            self.current_player = self.history.past_player().unwrap();
-        }
+        self.current_player = self.history.current_player();
         if self.history.past_position().is_some() {
             self.current_position = self.history.past_position().unwrap();
         }
