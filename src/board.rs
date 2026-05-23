@@ -22,7 +22,7 @@ pub mod player;
 pub use availables::Availables;
 pub use count::Count;
 pub use history::History;
-pub use player::{Player, PLAYERS};
+pub use player::{Player, PlayerMap, PLAYERS};
 
 use crate::error::TriversiError;
 use getset::{CopyGetters, Getters, MutGetters};
@@ -172,7 +172,7 @@ impl Board {
 
     pub fn update_availables(&self, availables: &mut Availables) {
         for &player in PLAYERS {
-            availables.get_mut(&player).unwrap().clear();
+            availables.get_mut(player).clear();
             for (y, row) in self.board.iter().enumerate() {
                 for (x, target_player) in row.iter().enumerate() {
                     if target_player.is_none() {

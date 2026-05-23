@@ -117,17 +117,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d07550c9036bf2ae0c684c4297d503f838287c83c53686d05370d0e139ae570"
 
 [[package]]
-name = "derive-new"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2cdc8d50f426189eef89dac62fabfa0abb27d5cc008f25bf4156a0203325becc"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "getset"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -324,7 +313,6 @@ version = "0.2.0"
 dependencies = [
  "anyhow",
  "clap",
- "derive-new",
  "getset",
  "serde",
  "serde_derive",
