@@ -3,10 +3,11 @@
 // Released under the MIT license.
 // see https://opensource.org/licenses/mit-license.php
 
-use crate::app::board_display::{BoardDisplay, ColorConfig};
-use crate::app::system::Play;
 use crate::board::{Board, Player, PlayerMap};
 use crate::error::TriversiError;
+use crate::game::Play;
+use crate::tui_app::board_display::BoardDisplay;
+use crate::tui_app::ColorConfig;
 use std::cmp;
 use tui::backend::Backend;
 use tui::layout::{Alignment, Rect};
@@ -48,31 +49,19 @@ pub struct ParagraphBoard {
     distance: usize,
     offset: (i16, i16),
     player_mark: PlayerMark,
-    player_name: PlayerMap<String>,
     frame_visibility: bool,
 }
 
 impl ParagraphBoard {
-    pub fn try_new(distance: usize, player_names_str: &str) -> Result<Self, TriversiError> {
+    pub fn try_new(distance: usize, player_marks_str: &str) -> Result<Self, TriversiError> {
         if !(2..=<Self as BoardDisplay>::MAX_DISTANCE).contains(&distance) {
             return Err(TriversiError::InvalidBoardDistance(distance));
         }
-        let names = player_names_str.split(',').collect::<Vec<_>>();
-        let player_mark = PlayerMark::try_from(player_names_str.to_owned())?;
-        if names.len() != 3 {
-            return Err(TriversiError::InvalidStringForPlayerNames(
-                player_names_str.to_owned(),
-            ));
-        }
+        let player_mark = PlayerMark::try_from(player_marks_str.to_owned())?;
         Ok(Self {
             distance,
             offset: (0, 0),
             player_mark,
-            player_name: PlayerMap::new(
-                names.first().unwrap().to_string(),
-                names.get(1).unwrap().to_string(),
-                names.get(2).unwrap().to_string(),
-            ),
             frame_visibility: false,
         })
     }
@@ -353,10 +342,6 @@ impl ParagraphBoard {
 
 impl BoardDisplay for ParagraphBoard {
     const MAX_DISTANCE: usize = 10;
-
-    fn player_name(&self, player: Player) -> &str {
-        self.player_name.get(player).as_str()
-    }
 
     fn scroll_left(&mut self) {
         self.offset.0 += 1

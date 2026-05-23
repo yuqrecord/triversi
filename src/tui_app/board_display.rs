@@ -7,16 +7,15 @@ pub mod paragraph_board;
 
 pub use paragraph_board::ParagraphBoard;
 
-use crate::app::system::Play;
-use crate::app::ColorConfig;
 use crate::board::{Board, Player};
+use crate::game::Play;
+use crate::tui_app::ColorConfig;
 use tui::backend::Backend;
 use tui::layout::Rect;
 use tui::terminal::Frame;
 
 pub trait BoardDisplay {
     const MAX_DISTANCE: usize;
-    fn player_name(&self, player: Player) -> &str;
     fn scroll_left(&mut self);
     fn scroll_right(&mut self);
     fn scroll_up(&mut self);
