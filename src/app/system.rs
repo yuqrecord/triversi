@@ -104,8 +104,7 @@ impl<D: BoardDisplay> System<D> {
     fn set_player(&mut self) {
         for position in self
             .availables
-            .get(&self.current_player)
-            .unwrap()
+            .get(self.current_player)
             .get(&self.current_position)
             .unwrap()
         {
@@ -195,8 +194,7 @@ impl<D: BoardDisplay> System<D> {
     fn select_in_play_turn(&mut self) {
         if self
             .availables
-            .get(&self.current_player)
-            .unwrap()
+            .get(self.current_player)
             .contains_key(&self.current_position)
         {
             self.set_player();
@@ -211,7 +209,6 @@ impl<D: BoardDisplay> System<D> {
                 );
                 self.update_status(Status::Play(Play::Finished));
                 self.clear_message();
-                self.board.count();
                 write!(self.message, " Game is finished! Final Score is").unwrap();
                 let mut player_iter = PLAYERS.iter().peekable();
                 while let Some(player) = player_iter.next() {
@@ -222,7 +219,7 @@ impl<D: BoardDisplay> System<D> {
                         self.message,
                         " {} = {}",
                         self.board_display.player_name(*player),
-                        self.board.count().get(player).unwrap(),
+                        self.board.count().get(*player),
                     )
                     .unwrap();
                     if player_iter.peek().is_none() {
@@ -239,12 +236,7 @@ impl<D: BoardDisplay> System<D> {
                 self.current_player.advance();
                 self.history.set_next_player(self.current_player);
                 self.clear_message();
-                if self
-                    .availables
-                    .get(&self.current_player)
-                    .unwrap()
-                    .is_empty()
-                {
+                if self.availables.get(self.current_player).is_empty() {
                     self.update_status(Status::Play(Play::Skipped));
                     self.message_color = Color::Red;
                     write!(self.message, " Player-{}: Your turn is skipped, you cannot select any position. Press [{}].",
@@ -271,12 +263,7 @@ impl<D: BoardDisplay> System<D> {
         self.clear_message();
         self.current_player.advance();
         self.history.set_next_player(self.current_player);
-        if self
-            .availables
-            .get(&self.current_player)
-            .unwrap()
-            .is_empty()
-        {
+        if self.availables.get(self.current_player).is_empty() {
             self.update_status(Status::Play(Play::Skipped));
             self.message_color = Color::Red;
             write!(

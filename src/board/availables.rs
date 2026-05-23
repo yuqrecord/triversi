@@ -3,45 +3,48 @@
 // Released under the MIT license.
 // see https://opensource.org/licenses/mit-license.php
 
-use crate::board::{Player, PLAYERS};
-use getset::{Getters, MutGetters};
+use crate::board::{Player, PlayerMap};
 use std::collections::{HashMap, HashSet};
-use std::ops::{Deref, DerefMut};
 
-#[derive(Clone, Debug, Getters, MutGetters)]
-#[getset(get = "pub", get_mut = "pub")]
+/// For a settable position, the set of positions whose stones get flipped.
+type PositionMap = HashMap<(usize, usize), HashSet<(usize, usize)>>;
+
+#[derive(Clone, Debug)]
 pub struct Availables {
-    #[allow(clippy::type_complexity)]
-    availables: HashMap<Player, HashMap<(usize, usize), HashSet<(usize, usize)>>>,
+    availables: PlayerMap<PositionMap>,
     positions_buf: Vec<(usize, usize)>,
 }
 
 impl Default for Availables {
     fn default() -> Self {
         Self {
-            availables: PLAYERS
-                .iter()
-                .map(|player| (*player, HashMap::new()))
-                .collect::<HashMap<_, _>>(),
+            availables: PlayerMap::new(HashMap::new(), HashMap::new(), HashMap::new()),
             positions_buf: Vec::new(),
         }
     }
 }
 
-impl Deref for Availables {
-    type Target = HashMap<Player, HashMap<(usize, usize), HashSet<(usize, usize)>>>;
-    fn deref(&self) -> &Self::Target {
-        &self.availables
-    }
-}
-
-impl DerefMut for Availables {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.availables
-    }
-}
-
 impl Availables {
+    pub fn get(&self, player: Player) -> &PositionMap {
+        self.availables.get(player)
+    }
+
+    pub fn get_mut(&mut self, player: Player) -> &mut PositionMap {
+        self.availables.get_mut(player)
+    }
+
+    pub fn values(&self) -> impl Iterator<Item = &PositionMap> {
+        self.availables.values()
+    }
+
+    pub fn positions_buf(&self) -> &Vec<(usize, usize)> {
+        &self.positions_buf
+    }
+
+    pub fn positions_buf_mut(&mut self) -> &mut Vec<(usize, usize)> {
+        &mut self.positions_buf
+    }
+
     pub fn add_or_extend(
         &mut self,
         player: Player,
@@ -50,8 +53,7 @@ impl Availables {
     ) {
         for candidate in candidate_list {
             self.availables
-                .get_mut(&player)
-                .unwrap()
+                .get_mut(player)
                 .entry(position)
                 .or_insert_with(|| HashSet::from([candidate]))
                 .insert(candidate);

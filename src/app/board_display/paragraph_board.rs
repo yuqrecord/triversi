@@ -5,7 +5,7 @@
 
 use crate::app::board_display::{BoardDisplay, ColorConfig};
 use crate::app::system::Play;
-use crate::board::{Board, Player};
+use crate::board::{Board, Player, PlayerMap};
 use crate::error::TriversiError;
 use std::cmp;
 use tui::backend::Backend;
@@ -16,15 +16,11 @@ use tui::text::{Span, Spans};
 use tui::widgets::{Block, Borders, Paragraph};
 
 #[derive(Clone, Copy, Debug)]
-pub struct PlayerMark(char, char, char);
+pub struct PlayerMark(PlayerMap<char>);
 
 impl PlayerMark {
     fn convert(&self, player: Player) -> char {
-        match player {
-            Player::Zero => self.0,
-            Player::One => self.1,
-            Player::Two => self.2,
-        }
+        *self.0.get(player)
     }
 }
 
@@ -40,11 +36,11 @@ impl TryFrom<String> for PlayerMark {
         {
             return Err(TriversiError::InvalidStringForPlayerMarks(s));
         }
-        Ok(Self(
+        Ok(Self(PlayerMap::new(
             mark_list.first().unwrap().chars().next().unwrap(),
             mark_list.get(1).unwrap().chars().next().unwrap(),
             mark_list.get(2).unwrap().chars().next().unwrap(),
-        ))
+        )))
     }
 }
 
@@ -52,7 +48,7 @@ pub struct ParagraphBoard {
     distance: usize,
     offset: (i16, i16),
     player_mark: PlayerMark,
-    player_name: (String, String, String),
+    player_name: PlayerMap<String>,
     frame_visibility: bool,
 }
 
@@ -72,7 +68,7 @@ impl ParagraphBoard {
             distance,
             offset: (0, 0),
             player_mark,
-            player_name: (
+            player_name: PlayerMap::new(
                 names.first().unwrap().to_string(),
                 names.get(1).unwrap().to_string(),
                 names.get(2).unwrap().to_string(),
@@ -359,11 +355,7 @@ impl BoardDisplay for ParagraphBoard {
     const MAX_DISTANCE: usize = 10;
 
     fn player_name(&self, player: Player) -> &str {
-        match player {
-            Player::Zero => &self.player_name.0,
-            Player::One => &self.player_name.1,
-            Player::Two => &self.player_name.2,
-        }
+        self.player_name.get(player).as_str()
     }
 
     fn scroll_left(&mut self) {
