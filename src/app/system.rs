@@ -203,10 +203,8 @@ impl<D: BoardDisplay> System<D> {
                 .values()
                 .all(|available| available.is_empty())
             {
-                self.history.push(
-                    (self.current_player, self.current_position),
-                    self.board.clone(),
-                );
+                self.history
+                    .push(self.current_position, self.board.clone(), self.current_player);
                 self.update_status(Status::Play(Play::Finished));
                 self.clear_message();
                 write!(self.message, " Game is finished! Final Score is").unwrap();
@@ -229,12 +227,9 @@ impl<D: BoardDisplay> System<D> {
                     }
                 }
             } else {
-                self.history.push(
-                    (self.current_player, self.current_position),
-                    self.board.clone(),
-                );
                 self.current_player.advance();
-                self.history.set_next_player(self.current_player);
+                self.history
+                    .push(self.current_position, self.board.clone(), self.current_player);
                 self.clear_message();
                 if self.availables.get(self.current_player).is_empty() {
                     self.update_status(Status::Play(Play::Skipped));
@@ -262,7 +257,7 @@ impl<D: BoardDisplay> System<D> {
     fn select_in_play_skip(&mut self) {
         self.clear_message();
         self.current_player.advance();
-        self.history.set_next_player(self.current_player);
+        self.history.set_current_player(self.current_player);
         if self.availables.get(self.current_player).is_empty() {
             self.update_status(Status::Play(Play::Skipped));
             self.message_color = Color::Red;
@@ -521,7 +516,7 @@ impl<D: BoardDisplay> System<D> {
             self.history.current_turn(),
         )
         .unwrap();
-        for player_putting in self.history.record().player_positions() {
+        for player_putting in self.history.moves() {
             writeln!(self.debug_information, " {:?}", player_putting).unwrap();
         }
     }
