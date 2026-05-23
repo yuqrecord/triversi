@@ -134,103 +134,62 @@ impl<D: BoardDisplay> System<D> {
 
     fn play(&mut self, key: Key, play: Play) {
         match play {
-            Play::Turn => match key {
-                key_binding::key::QUIT => self.update_status(Status::AskQuit),
-                key_binding::key::INIT => self.update_status(Status::AskInit),
-                key_binding::key::FRAME_TOGGLE => self.board_display.toggle_frame_visibility(),
-                key_binding::key::MOVE_LEFT => {
-                    self.board.move_position_left(&mut self.current_position)
+            Play::Turn => {
+                if !self.handle_common_play_key(key) && key == key_binding::key::SELECT {
+                    self.select_in_play_turn();
                 }
-                key_binding::key::MOVE_RIGHT => {
-                    self.board.move_position_right(&mut self.current_position)
+            }
+            Play::Skipped => {
+                if !self.handle_common_play_key(key) && key == key_binding::key::SELECT {
+                    self.select_in_play_skip();
                 }
-                key_binding::key::MOVE_UP => {
-                    self.board.move_position_up(&mut self.current_position)
-                }
-                key_binding::key::MOVE_DOWN => {
-                    self.board.move_position_down(&mut self.current_position)
-                }
-                key_binding::key::SCROLL_LEFT => self.board_display.scroll_left(),
-                key_binding::key::SCROLL_RIGHT => self.board_display.scroll_right(),
-                key_binding::key::SCROLL_UP => self.board_display.scroll_up(),
-                key_binding::key::SCROLL_DOWN => self.board_display.scroll_down(),
-                key_binding::key::SCROLL_RESET => self.board_display.scroll_reset(),
-                key_binding::key::ZOOM_IN => self.board_display.zoom_in(),
-                key_binding::key::ZOOM_OUT => self.board_display.zoom_out(),
-                key_binding::key::INTO_HISTORY => self.update_status(Status::Play(Play::History)),
-                key_binding::key::SELECT => self.select_in_play_turn(),
-                _ => (),
-            },
+            }
+            Play::Finished => {
+                self.handle_common_play_key(key);
+            }
             Play::History => match key {
                 key_binding::key::QUIT => self.update_status(Status::AskQuit),
                 key_binding::key::INIT => self.update_status(Status::AskInit),
                 key_binding::key::PREV_HISTORY | key_binding::key::NEXT_HISTORY => {
                     self.history_move(key)
                 }
-                key_binding::key::SCROLL_LEFT => self.board_display.scroll_left(),
-                key_binding::key::SCROLL_RIGHT => self.board_display.scroll_right(),
-                key_binding::key::SCROLL_UP => self.board_display.scroll_up(),
-                key_binding::key::SCROLL_DOWN => self.board_display.scroll_down(),
-                key_binding::key::SCROLL_RESET => self.board_display.scroll_reset(),
-                key_binding::key::ZOOM_IN => self.board_display.zoom_in(),
-                key_binding::key::ZOOM_OUT => self.board_display.zoom_out(),
                 key_binding::key::SELECT => self.update_status(Status::Play(Play::Turn)),
-                _ => (),
-            },
-            Play::Skipped => match key {
-                key_binding::key::QUIT => self.update_status(Status::AskQuit),
-                key_binding::key::INIT => self.update_status(Status::AskInit),
-                key_binding::key::FRAME_TOGGLE => self.board_display.toggle_frame_visibility(),
-                key_binding::key::MOVE_LEFT => {
-                    self.board.move_position_left(&mut self.current_position)
+                _ => {
+                    self.handle_scroll_zoom_key(key);
                 }
-                key_binding::key::MOVE_RIGHT => {
-                    self.board.move_position_right(&mut self.current_position)
-                }
-                key_binding::key::MOVE_UP => {
-                    self.board.move_position_up(&mut self.current_position)
-                }
-                key_binding::key::MOVE_DOWN => {
-                    self.board.move_position_down(&mut self.current_position)
-                }
-                key_binding::key::SCROLL_LEFT => self.board_display.scroll_left(),
-                key_binding::key::SCROLL_RIGHT => self.board_display.scroll_right(),
-                key_binding::key::SCROLL_UP => self.board_display.scroll_up(),
-                key_binding::key::SCROLL_DOWN => self.board_display.scroll_down(),
-                key_binding::key::SCROLL_RESET => self.board_display.scroll_reset(),
-                key_binding::key::ZOOM_IN => self.board_display.zoom_in(),
-                key_binding::key::ZOOM_OUT => self.board_display.zoom_out(),
-                key_binding::key::INTO_HISTORY => self.update_status(Status::Play(Play::History)),
-                key_binding::key::SELECT => self.select_in_play_skip(),
-                _ => (),
-            },
-            Play::Finished => match key {
-                key_binding::key::QUIT => self.update_status(Status::AskQuit),
-                key_binding::key::INIT => self.update_status(Status::AskInit),
-                key_binding::key::FRAME_TOGGLE => self.board_display.toggle_frame_visibility(),
-                key_binding::key::MOVE_LEFT => {
-                    self.board.move_position_left(&mut self.current_position)
-                }
-                key_binding::key::MOVE_RIGHT => {
-                    self.board.move_position_right(&mut self.current_position)
-                }
-                key_binding::key::MOVE_UP => {
-                    self.board.move_position_up(&mut self.current_position)
-                }
-                key_binding::key::MOVE_DOWN => {
-                    self.board.move_position_down(&mut self.current_position)
-                }
-                key_binding::key::SCROLL_LEFT => self.board_display.scroll_left(),
-                key_binding::key::SCROLL_RIGHT => self.board_display.scroll_right(),
-                key_binding::key::SCROLL_UP => self.board_display.scroll_up(),
-                key_binding::key::SCROLL_DOWN => self.board_display.scroll_down(),
-                key_binding::key::SCROLL_RESET => self.board_display.scroll_reset(),
-                key_binding::key::ZOOM_IN => self.board_display.zoom_in(),
-                key_binding::key::ZOOM_OUT => self.board_display.zoom_out(),
-                key_binding::key::INTO_HISTORY => self.update_status(Status::Play(Play::History)),
-                _ => (),
             },
         }
+    }
+
+    fn handle_scroll_zoom_key(&mut self, key: Key) -> bool {
+        match key {
+            key_binding::key::SCROLL_LEFT => self.board_display.scroll_left(),
+            key_binding::key::SCROLL_RIGHT => self.board_display.scroll_right(),
+            key_binding::key::SCROLL_UP => self.board_display.scroll_up(),
+            key_binding::key::SCROLL_DOWN => self.board_display.scroll_down(),
+            key_binding::key::SCROLL_RESET => self.board_display.scroll_reset(),
+            key_binding::key::ZOOM_IN => self.board_display.zoom_in(),
+            key_binding::key::ZOOM_OUT => self.board_display.zoom_out(),
+            _ => return false,
+        }
+        true
+    }
+
+    fn handle_common_play_key(&mut self, key: Key) -> bool {
+        match key {
+            key_binding::key::QUIT => self.update_status(Status::AskQuit),
+            key_binding::key::INIT => self.update_status(Status::AskInit),
+            key_binding::key::FRAME_TOGGLE => self.board_display.toggle_frame_visibility(),
+            key_binding::key::MOVE_LEFT => self.board.move_position_left(&mut self.current_position),
+            key_binding::key::MOVE_RIGHT => {
+                self.board.move_position_right(&mut self.current_position)
+            }
+            key_binding::key::MOVE_UP => self.board.move_position_up(&mut self.current_position),
+            key_binding::key::MOVE_DOWN => self.board.move_position_down(&mut self.current_position),
+            key_binding::key::INTO_HISTORY => self.update_status(Status::Play(Play::History)),
+            _ => return self.handle_scroll_zoom_key(key),
+        }
+        true
     }
 
     fn select_in_play_turn(&mut self) {
