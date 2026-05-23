@@ -130,7 +130,7 @@ impl ParagraphBoard {
         &self,
         board: &Board,
         (net_offset_x, net_offset_y): (usize, usize),
-    ) -> Vec<Spans> {
+    ) -> Vec<Spans<'_>> {
         let mut board_cells = Vec::new();
         for _ in 0..net_offset_y {
             board_cells.push(Spans::from(vec![Span::raw("")]));
@@ -290,7 +290,7 @@ impl ParagraphBoard {
         color_config: ColorConfig,
         current_player: Player,
         current_position: (usize, usize),
-    ) -> Vec<Spans> {
+    ) -> Vec<Spans<'_>> {
         let net_offset = (
             cmp::max(0, self.offset.0 * self.distance as i16) as usize,
             cmp::max(0, self.offset.1 * self.distance as i16) as usize,
