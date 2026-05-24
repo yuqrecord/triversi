@@ -24,8 +24,14 @@ cargo install --git https://github.com/yu1guana/triversi --features alternative_
 
 ## Usage
 
+### TUI (terminal)
+
+```sh
+cargo run --bin tui
+```
+
 ```text
-Usage: triversi [OPTIONS]
+Usage: tui [OPTIONS]
 
 Options:
   -r, --range <RANGE>                Number of positions in one edge (>= 5 & = 0,2 (mod3)) [default: 14]
