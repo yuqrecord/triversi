@@ -35,12 +35,42 @@ Options:
   -V, --version                      Print version
 ```
 
+## GUI (egui/eframe)
+
+In addition to the terminal UI, Triversi ships an egui/eframe GUI that runs both
+as a native desktop app and in the browser via WebAssembly. The GUI shares the
+same game core (`game` module) as the TUI.
+
+### Native
+
+```sh
+cargo run --bin gui
+```
+
+Click a cell to place a stone (legal moves are outlined). The arrow keys move the
+cursor and Enter confirms. Buttons are provided for initialize, quit, and history
+navigation.
+
+### WebAssembly
+
+Building for the browser uses [Trunk](https://trunkrs.dev/):
+
+```sh
+rustup target add wasm32-unknown-unknown
+cargo install --locked trunk
+trunk serve            # then open the printed http://127.0.0.1:8080
+# or build static assets into dist/:
+trunk build --release
+```
+
+`index.html` builds the `gui` binary to WebAssembly (`<link data-trunk rel="rust" data-bin="gui" />`).
+
 ## Key Bindings
 
 Key bindings are displayed at the top when playing.
 
 Two key bindings (default and alternative) are supported.
-If you want to change key bindings, edit the source code ([src/app/key\_binding.rs](src/app/key_binding.rs)).
+If you want to change key bindings, edit the source code ([src/tui\_app/key\_binding.rs](src/tui_app/key_binding.rs)).
 
 The difference of key bindings between default and alternative is as follows:
 

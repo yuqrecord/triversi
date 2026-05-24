@@ -16,6 +16,9 @@ pub enum Action {
     MoveLeft,
     MoveRight,
     Select,
+    /// Select a specific board position directly (e.g. a mouse click on a
+    /// cell), without first moving the cursor there step by step.
+    SelectAt((usize, usize)),
     RequestInit,
     RequestQuit,
     Confirm,

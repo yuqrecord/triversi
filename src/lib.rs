@@ -4,7 +4,11 @@
 // see https://opensource.org/licenses/mit-license.php
 
 pub mod board;
-pub mod cli;
 pub mod error;
 pub mod game;
+pub mod gui_app;
+
+#[cfg(not(target_arch = "wasm32"))]
+pub mod cli;
+#[cfg(not(target_arch = "wasm32"))]
 pub mod tui_app;
