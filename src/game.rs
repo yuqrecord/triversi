@@ -119,6 +119,10 @@ impl Game {
         match play {
             Play::Turn => match action {
                 Action::Select => self.select_in_play_turn(),
+                Action::SelectAt(position) => {
+                    self.current_position = position;
+                    self.select_in_play_turn();
+                }
                 _ => self.handle_common_play_action(action),
             },
             Play::Skipped => match action {

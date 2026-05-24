@@ -3,9 +3,12 @@
 // Released under the MIT license.
 // see https://opensource.org/licenses/mit-license.php
 
-use anyhow::Result;
-use triversi::cli::Cli;
+//! Terminal (TUI) entry point. The GUI lives in the separate `gui` binary.
 
-fn main() -> Result<()> {
-    Cli::run()
+#[cfg(not(target_arch = "wasm32"))]
+fn main() -> anyhow::Result<()> {
+    triversi::cli::Cli::run()
 }
+
+#[cfg(target_arch = "wasm32")]
+fn main() {}

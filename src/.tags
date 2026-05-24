@@ -51,6 +51,8 @@ Board	board.rs	/^impl Board {$/;"	c
 Board	board.rs	/^pub struct Board {$/;"	s
 BoardDisplay	tui_app/board_display.rs	/^pub trait BoardDisplay {$/;"	i
 Cancel	game/action.rs	/^    Cancel,$/;"	e	enum:Action
+CellLayout	gui_app.rs	/^impl CellLayout {$/;"	c
+CellLayout	gui_app.rs	/^struct CellLayout {$/;"	s
 Cli	cli.rs	/^impl Cli {$/;"	c
 Cli	cli.rs	/^pub struct Cli {$/;"	s
 ColorConfig	tui_app/color_config.rs	/^impl ColorConfig {$/;"	c
@@ -60,6 +62,8 @@ Confirm	game/action.rs	/^    Confirm,$/;"	e	enum:Action
 Count	board/count.rs	/^impl Count {$/;"	c
 Count	board/count.rs	/^impl Default for Count {$/;"	c
 Count	board/count.rs	/^pub struct Count {$/;"	s
+DEFAULT_PLAYER_NAMES	gui_app.rs	/^const DEFAULT_PLAYER_NAMES: &str = "1,2,3";$/;"	C
+DEFAULT_RANGE	gui_app.rs	/^const DEFAULT_RANGE: usize = 14;$/;"	C
 EnterHistory	game/action.rs	/^    EnterHistory,$/;"	e	enum:Action
 Error	game/message.rs	/^    Error,$/;"	e	enum:MessageKind
 Error	tui_app/board_display/paragraph_board.rs	/^    type Error = TriversiError;$/;"	t	implementation:PlayerMark
@@ -141,10 +145,14 @@ ScrollReset	tui_app/key_binding.rs	/^    ScrollReset,$/;"	e	enum:ViewAction
 ScrollRight	tui_app/key_binding.rs	/^    ScrollRight,$/;"	e	enum:ViewAction
 ScrollUp	tui_app/key_binding.rs	/^    ScrollUp,$/;"	e	enum:ViewAction
 Select	game/action.rs	/^    Select,$/;"	e	enum:Action
+SelectAt	game/action.rs	/^    SelectAt((usize, usize)),$/;"	e	enum:Action
 Skipped	game/status.rs	/^    Skipped,$/;"	e	enum:Play
 Snapshot	board/history.rs	/^struct Snapshot {$/;"	s
 Status	game/status.rs	/^pub enum Status {$/;"	g
 ToggleFrame	tui_app/key_binding.rs	/^    ToggleFrame,$/;"	e	enum:ViewAction
+TriversiApp	gui_app.rs	/^impl TriversiApp {$/;"	c
+TriversiApp	gui_app.rs	/^impl eframe::App for TriversiApp {$/;"	c
+TriversiApp	gui_app.rs	/^pub struct TriversiApp {$/;"	s
 TriversiError	error.rs	/^pub enum TriversiError {$/;"	g
 Tui	tui_app.rs	/^impl Tui<TermionBackend<AlternateScreen<RawTerminal<Stdout>>>> {$/;"	c
 Tui	tui_app.rs	/^pub struct Tui<B: Backend> {$/;"	s
@@ -181,8 +189,10 @@ board	board/history.rs	/^    pub fn board(&self) -> &Board {$/;"	P	implementatio
 board	game.rs	/^    board: Board,$/;"	m	struct:Game
 board	lib.rs	/^pub mod board;$/;"	n
 board_display	tui_app.rs	/^pub mod board_display;$/;"	n
+cell_at	gui_app.rs	/^    fn cell_at(&self, pointer: egui::Pos2, range: usize) -> Option<(usize, usize)> {$/;"	P	implementation:CellLayout
 cell_background	tui_app/board_display/paragraph_board.rs	/^    fn cell_background(&self) -> char {$/;"	P	implementation:ParagraphBoard
 cell_bottom_frame	tui_app/board_display/paragraph_board.rs	/^    fn cell_bottom_frame(&self) -> char {$/;"	P	implementation:ParagraphBoard
+cell_center	gui_app.rs	/^    fn cell_center(&self, x: usize, y: usize) -> egui::Pos2 {$/;"	P	implementation:CellLayout
 cell_left_frame	tui_app/board_display/paragraph_board.rs	/^    fn cell_left_frame(&self) -> char {$/;"	P	implementation:ParagraphBoard
 cell_none	tui_app/board_display/paragraph_board.rs	/^    fn cell_none(&self) -> char {$/;"	P	implementation:ParagraphBoard
 cell_player	tui_app/board_display/paragraph_board.rs	/^    fn cell_player(&self, player: Option<Player>) -> char {$/;"	P	implementation:ParagraphBoard
@@ -212,8 +222,11 @@ dispatch	game.rs	/^    pub fn dispatch(&mut self, action: Action) {$/;"	P	implem
 distance	cli.rs	/^    distance: usize,$/;"	m	struct:Cli
 distance	tui_app/board_display/paragraph_board.rs	/^    distance: usize,$/;"	m	struct:ParagraphBoard
 dummy_board	board/history.rs	/^    fn dummy_board() -> Board {$/;"	f	module:tests
+dx	gui_app.rs	/^    dx: f32,$/;"	m	struct:CellLayout
+dy	gui_app.rs	/^    dy: f32,$/;"	m	struct:CellLayout
 error	lib.rs	/^pub mod error;$/;"	n
 frame_visibility	tui_app/board_display/paragraph_board.rs	/^    frame_visibility: bool,$/;"	m	struct:ParagraphBoard
+game	gui_app.rs	/^    game: Game,$/;"	m	struct:TriversiApp
 game	lib.rs	/^pub mod game;$/;"	n
 game_action	tui_app/key_binding.rs	/^pub fn game_action(key: Key) -> Option<Action> {$/;"	f
 get	board/availables.rs	/^    pub fn get(&self, player: Player) -> &PositionMap {$/;"	P	implementation:Availables
@@ -223,8 +236,10 @@ get_mut	board/availables.rs	/^    pub fn get_mut(&mut self, player: Player) -> &
 get_mut	board/player.rs	/^    pub fn get_mut(&mut self, player: Player) -> &mut T {$/;"	P	implementation:PlayerMap
 go_next	board/history.rs	/^    pub fn go_next(&mut self) {$/;"	P	implementation:History
 go_prev	board/history.rs	/^    pub fn go_prev(&mut self) {$/;"	P	implementation:History
+gui_app	lib.rs	/^pub mod gui_app;$/;"	n
 handle_common_play_action	game.rs	/^    fn handle_common_play_action(&mut self, action: Action) {$/;"	P	implementation:Game
 handle_key	tui_app.rs	/^fn handle_key<D: BoardDisplay>(key: Key, game: &mut Game, display: &mut D) {$/;"	f
+handle_keyboard	gui_app.rs	/^    fn handle_keyboard(&mut self, ctx: &egui::Context) {$/;"	P	implementation:TriversiApp
 history	board.rs	/^pub mod history;$/;"	n
 history	game.rs	/^    history: History,$/;"	m	struct:Game
 history_move	game.rs	/^    fn history_move(&mut self, action: Action) {$/;"	P	implementation:Game
@@ -237,7 +252,10 @@ initial_position	board.rs	/^    pub fn initial_position(&self) -> (usize, usize)
 key_binding	tui_app.rs	/^pub mod key_binding;$/;"	n
 kind	game/message.rs	/^    pub kind: MessageKind,$/;"	m	struct:Message
 last_position	board/history.rs	/^    last_position: Option<(usize, usize)>,$/;"	m	struct:Snapshot
-main	main.rs	/^fn main() -> Result<()> {$/;"	f
+main	bin/gui.rs	/^fn main() -> eframe::Result<()> {$/;"	f
+main	bin/gui.rs	/^fn main() {$/;"	f
+main	main.rs	/^fn main() -> anyhow::Result<()> {$/;"	f
+main	main.rs	/^fn main() {}$/;"	f
 make_board_cells	tui_app/board_display/paragraph_board.rs	/^    fn make_board_cells($/;"	P	implementation:ParagraphBoard
 make_border_style	tui_app/board_display/paragraph_board.rs	/^    fn make_border_style($/;"	P	implementation:ParagraphBoard
 make_empty_board_cells	tui_app/board_display/paragraph_board.rs	/^    fn make_empty_board_cells($/;"	P	implementation:ParagraphBoard
@@ -254,7 +272,11 @@ moves	board/history.rs	/^    pub fn moves(&self) -> impl Iterator<Item = (Player
 navigation_tracks_current_player	board/history.rs	/^    fn navigation_tracks_current_player() {$/;"	f	module:tests
 new	board/history.rs	/^    pub fn new(board: Board) -> Self {$/;"	P	implementation:History
 new	board/player.rs	/^    pub fn new(zero: T, one: T, two: T) -> Self {$/;"	P	implementation:PlayerMap
+new	gui_app.rs	/^    fn new(rect: egui::Rect, range: usize) -> Self {$/;"	P	implementation:CellLayout
+new	gui_app.rs	/^    pub fn new(_cc: &eframe::CreationContext<'_>) -> Self {$/;"	P	implementation:TriversiApp
+new_game	gui_app.rs	/^fn new_game() -> Game {$/;"	f
 offset	tui_app/board_display/paragraph_board.rs	/^    offset: (i16, i16),$/;"	m	struct:ParagraphBoard
+origin	gui_app.rs	/^    origin: egui::Pos2,$/;"	m	struct:CellLayout
 paragraph_board	tui_app/board_display.rs	/^pub mod paragraph_board;$/;"	n
 past_position	board/history.rs	/^    pub fn past_position(&self) -> Option<(usize, usize)> {$/;"	P	implementation:History
 play	game.rs	/^    fn play(&mut self, action: Action, play: Play) {$/;"	P	implementation:Game
@@ -262,6 +284,7 @@ player	board.rs	/^    pub fn player(&self, (x, y): (usize, usize)) -> Option<Pla
 player	board.rs	/^pub mod player;$/;"	n
 player	tui_app/color_config.rs	/^    player: PlayerMap<Color>,$/;"	m	struct:ColorConfig
 player	tui_app/color_config.rs	/^    pub fn player(&self, player: Player) -> Color {$/;"	P	implementation:ColorConfig
+player_color	gui_app.rs	/^fn player_color(player: Player) -> egui::Color32 {$/;"	f
 player_mark	tui_app/board_display/paragraph_board.rs	/^    player_mark: PlayerMark,$/;"	m	struct:ParagraphBoard
 player_name	game.rs	/^    player_name: PlayerMap<String>,$/;"	m	struct:Game
 player_name	game.rs	/^    pub fn player_name(&self, player: Player) -> &str {$/;"	P	implementation:Game
@@ -276,6 +299,7 @@ put_bottom_frame	tui_app/board_display/paragraph_board.rs	/^    fn put_bottom_fr
 put_left_frame	tui_app/board_display/paragraph_board.rs	/^    fn put_left_frame($/;"	P	implementation:ParagraphBoard
 put_player	tui_app/board_display/paragraph_board.rs	/^    fn put_player($/;"	P	implementation:ParagraphBoard
 put_right_frame	tui_app/board_display/paragraph_board.rs	/^    fn put_right_frame($/;"	P	implementation:ParagraphBoard
+radius	gui_app.rs	/^    radius: f32,$/;"	m	struct:CellLayout
 range	board.rs	/^    range: usize,$/;"	m	struct:Board
 range	cli.rs	/^    range: usize,$/;"	m	struct:Cli
 render	tui_app.rs	/^pub mod render;$/;"	n
@@ -291,8 +315,11 @@ render_scroll_block	tui_app/board_display/paragraph_board.rs	/^    fn render_scr
 render_zoom_block	tui_app/board_display.rs	/^    fn render_zoom_block<B: Backend>(&self, frame: &mut Frame<B>, rect: Rect);$/;"	P	interface:BoardDisplay
 render_zoom_block	tui_app/board_display/paragraph_board.rs	/^    fn render_zoom_block<B: Backend>(&self, frame: &mut Frame<B>, rect: Rect) {$/;"	P	implementation:ParagraphBoard
 reset	board/count.rs	/^    pub fn reset(&mut self) {$/;"	P	implementation:Count
+reset	gui_app.rs	/^    fn reset(&mut self) {$/;"	P	implementation:TriversiApp
 run	cli.rs	/^    pub fn run() -> Result<()> {$/;"	P	implementation:Cli
 run	tui_app.rs	/^    pub fn run<D: BoardDisplay>($/;"	P	implementation:Tui
+run_native	gui_app.rs	/^pub fn run_native() -> eframe::Result<()> {$/;"	f
+run_wasm	gui_app.rs	/^pub fn run_wasm() {$/;"	f
 scroll_down	tui_app/board_display.rs	/^    fn scroll_down(&mut self);$/;"	P	interface:BoardDisplay
 scroll_down	tui_app/board_display/paragraph_board.rs	/^    fn scroll_down(&mut self) {$/;"	P	implementation:ParagraphBoard
 scroll_left	tui_app/board_display.rs	/^    fn scroll_left(&mut self);$/;"	P	interface:BoardDisplay
@@ -322,9 +349,15 @@ try_new	game.rs	/^    pub fn try_new(board: Board, player_names_str: &str) -> Re
 try_new	tui_app.rs	/^    pub fn try_new() -> anyhow::Result<Self> {$/;"	P	implementation:Tui
 try_new	tui_app/board_display/paragraph_board.rs	/^    pub fn try_new(distance: usize, player_marks_str: &str) -> Result<Self, TriversiError> {$/;"	P	implementation:ParagraphBoard
 tui_app	lib.rs	/^pub mod tui_app;$/;"	n
+ui	gui_app.rs	/^    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {$/;"	P	implementation:TriversiApp
+ui_ask	gui_app.rs	/^    fn ui_ask(&mut self, ctx: &egui::Context) {$/;"	P	implementation:TriversiApp
 ui_ask_init	tui_app/render.rs	/^fn ui_ask_init<B: Backend>(frame: &mut Frame<B>) {$/;"	f
 ui_ask_quit	tui_app/render.rs	/^fn ui_ask_quit<B: Backend>(frame: &mut Frame<B>) {$/;"	f
+ui_board	gui_app.rs	/^    fn ui_board(&mut self, ui: &mut egui::Ui) {$/;"	P	implementation:TriversiApp
+ui_bottom	gui_app.rs	/^    fn ui_bottom(&mut self, ui: &mut egui::Ui) {$/;"	P	implementation:TriversiApp
+ui_controls	gui_app.rs	/^    fn ui_controls(&mut self, ui: &mut egui::Ui) {$/;"	P	implementation:TriversiApp
 ui_play	tui_app/render.rs	/^fn ui_play<B: Backend, D: BoardDisplay>($/;"	f
+ui_top	gui_app.rs	/^    fn ui_top(&mut self, ui: &mut egui::Ui) {$/;"	P	implementation:TriversiApp
 update_available_list	game.rs	/^    fn update_available_list(&mut self) {$/;"	P	implementation:Game
 update_availables	board.rs	/^    pub fn update_availables(&self, availables: &mut Availables) {$/;"	P	implementation:Board
 update_status	game.rs	/^    fn update_status(&mut self, status: Status) {$/;"	P	implementation:Game
