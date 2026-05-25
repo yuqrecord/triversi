@@ -39,22 +39,23 @@ impl TriversiApp {
     fn ui_top(&mut self, ui: &mut egui::Ui) {
         ui.heading("Triversi");
         ui.horizontal(|ui| {
-            ui.label("Turn:");
-            let player = self.game.current_player();
-            let finished = self.game.current_status() == Status::Play(Play::Finished);
-            if finished {
-                ui.label("game finished");
-            } else {
-                ui.colored_label(player_color(player), self.game.player_name(player));
-            }
+            ui.label(format!("Turn: {}", self.game.history().current_turn() + 1));
         });
         ui.horizontal(|ui| {
+            let current_player = self.game.current_player();
+            let finished = self.game.current_status() == Status::Play(Play::Finished);
             for &player in PLAYERS {
                 let score = self.game.board().count().get(player);
-                ui.colored_label(
-                    player_color(player),
-                    format!("Player-{}: {}", self.game.player_name(player), score),
-                );
+                let mut text = egui::RichText::new(format!(
+                    "Player-{}: {}",
+                    self.game.player_name(player),
+                    score
+                ))
+                .color(player_color(player));
+                if !finished && player == current_player {
+                    text = text.background_color(egui::Color32::from_gray(80)).strong();
+                }
+                ui.label(text);
                 ui.separator();
             }
         });
