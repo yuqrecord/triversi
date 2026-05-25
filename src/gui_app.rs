@@ -22,7 +22,8 @@ pub struct TriversiApp {
 }
 
 impl TriversiApp {
-    pub fn new(_cc: &eframe::CreationContext<'_>) -> Self {
+    pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
+        cc.egui_ctx.set_pixels_per_point(1.5);
         Self {
             game: new_game(),
         }
@@ -112,13 +113,11 @@ impl TriversiApp {
     fn ui_bottom(&mut self, ui: &mut egui::Ui) {
         let kind = self.game.message().kind;
         let text = self.game.message().text.clone();
-        if !text.trim().is_empty() {
-            let color = match kind {
-                MessageKind::Normal => ui.visuals().text_color(),
-                MessageKind::Error => egui::Color32::from_rgb(230, 80, 80),
-            };
-            ui.colored_label(color, text.trim());
-        }
+        let color = match kind {
+            MessageKind::Normal => ui.visuals().text_color(),
+            MessageKind::Error => egui::Color32::from_rgb(230, 80, 80),
+        };
+        ui.colored_label(color, text.trim());
         ui.separator();
         self.ui_controls(ui);
     }
@@ -175,7 +174,9 @@ impl TriversiApp {
             HashSet::new()
         };
 
-        let size = ui.available_size();
+        const BOARD_MARGIN: f32 = 20.0;
+        ui.add_space(BOARD_MARGIN);
+        let size = egui::vec2(ui.available_width(), ui.available_height() - BOARD_MARGIN);
         let (response, painter) = ui.allocate_painter(size, egui::Sense::click());
         let rect = response.rect;
         let layout = CellLayout::new(rect, range);
