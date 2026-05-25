@@ -73,10 +73,17 @@ impl TriversiApp {
     }
 
     fn ui_controls(&mut self, ui: &mut egui::Ui) {
-        let Status::Play(play) = self.game.current_status() else {
-            return;
+        let play = match self.game.current_status() {
+            Status::Play(play) => Some(play),
+            _ => None,
         };
         ui.horizontal(|ui| {
+            let Some(play) = play else {
+                // Reserve the button row height so the panel does not shrink
+                // while the buttons are hidden during confirmation dialogs.
+                ui.allocate_space(egui::vec2(0.0, ui.spacing().interact_size.y));
+                return;
+            };
             ui.toggle_value(&mut self.show_legal, "Show legal moves");
             ui.separator();
             if ui.button("Initialize").clicked() {
