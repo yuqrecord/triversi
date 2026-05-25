@@ -36,58 +36,6 @@ impl TriversiApp {
         self.game = new_game();
     }
 
-    fn handle_keyboard(&mut self, ctx: &egui::Context) {
-        // Map keys to actions per state, so the GUI does not rely on the core
-        // silently ignoring keys that are meaningless in the current state.
-        let mut actions = Vec::new();
-        ctx.input(|i| match self.game.current_status() {
-            Status::Play(Play::Turn) => {
-                if i.key_pressed(egui::Key::ArrowUp) {
-                    actions.push(Action::MoveUp);
-                }
-                if i.key_pressed(egui::Key::ArrowDown) {
-                    actions.push(Action::MoveDown);
-                }
-                if i.key_pressed(egui::Key::ArrowLeft) {
-                    actions.push(Action::MoveLeft);
-                }
-                if i.key_pressed(egui::Key::ArrowRight) {
-                    actions.push(Action::MoveRight);
-                }
-                if i.key_pressed(egui::Key::Enter) {
-                    actions.push(Action::Select);
-                }
-            }
-            Status::Play(Play::Skipped) => {
-                if i.key_pressed(egui::Key::Enter) {
-                    actions.push(Action::Select);
-                }
-            }
-            Status::Play(Play::History) => {
-                if i.key_pressed(egui::Key::ArrowLeft) {
-                    actions.push(Action::HistoryPrev);
-                }
-                if i.key_pressed(egui::Key::ArrowRight) {
-                    actions.push(Action::HistoryNext);
-                }
-                if i.key_pressed(egui::Key::Enter) {
-                    actions.push(Action::Select);
-                }
-            }
-            Status::AskInit | Status::AskQuit => {
-                if i.key_pressed(egui::Key::Y) {
-                    actions.push(Action::Confirm);
-                } else if i.key_pressed(egui::Key::N) || i.key_pressed(egui::Key::Escape) {
-                    actions.push(Action::Cancel);
-                }
-            }
-            Status::Play(Play::Finished) | Status::Quit => {}
-        });
-        for action in actions {
-            self.game.dispatch(action);
-        }
-    }
-
     fn ui_top(&mut self, ui: &mut egui::Ui) {
         ui.heading("Triversi");
         ui.horizontal(|ui| {
@@ -170,7 +118,6 @@ impl TriversiApp {
     fn ui_board(&mut self, ui: &mut egui::Ui) {
         let range = self.game.board().range();
         let current_player = self.game.current_player();
-        let current_position = self.game.current_position();
         let status = self.game.current_status();
         let legal: HashSet<(usize, usize)> = if self.show_legal && status == Status::Play(Play::Turn) {
             self.game.availables().get(current_player).keys().copied().collect()
@@ -187,6 +134,11 @@ impl TriversiApp {
         // is never clipped by the painter boundary.
         let layout = CellLayout::new(rect.shrink(3.0), range);
 
+        // Cell currently under the mouse pointer.
+        let hovered_cell = response
+            .hover_pos()
+            .and_then(|pointer| layout.cell_at(pointer, range));
+
         for y in 0..range {
             for x in 0..=y {
                 let center = layout.cell_center(x, y);
@@ -202,7 +154,7 @@ impl TriversiApp {
                         egui::Stroke::new(2.0, egui::Color32::from_rgb(90, 220, 90)),
                     );
                 }
-                if current_position == (x, y) {
+                if hovered_cell == Some((x, y)) {
                     painter.circle_stroke(
                         center,
                         layout.radius,
@@ -248,7 +200,6 @@ impl TriversiApp {
 impl eframe::App for TriversiApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
-        self.handle_keyboard(&ctx);
 
         egui::Panel::top("triversi_top").show_inside(ui, |ui| self.ui_top(ui));
         egui::Panel::bottom("triversi_bottom").show_inside(ui, |ui| self.ui_bottom(ui));
