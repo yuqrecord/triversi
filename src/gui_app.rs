@@ -183,7 +183,9 @@ impl TriversiApp {
         let size = egui::vec2(ui.available_width(), ui.available_height() - BOARD_MARGIN);
         let (response, painter) = ui.allocate_painter(size, egui::Sense::click());
         let rect = response.rect;
-        let layout = CellLayout::new(rect, range);
+        // Shrink the layout rect by the cursor stroke half-width so the stroke
+        // is never clipped by the painter boundary.
+        let layout = CellLayout::new(rect.shrink(3.0), range);
 
         for y in 0..range {
             for x in 0..=y {
