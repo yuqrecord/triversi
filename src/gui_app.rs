@@ -19,6 +19,7 @@ const DEFAULT_PLAYER_NAMES: &str = "1,2,3";
 
 pub struct TriversiApp {
     game: Game,
+    show_legal: bool,
 }
 
 impl TriversiApp {
@@ -26,6 +27,7 @@ impl TriversiApp {
         cc.egui_ctx.set_pixels_per_point(1.5);
         Self {
             game: new_game(),
+            show_legal: false,
         }
     }
 
@@ -127,6 +129,8 @@ impl TriversiApp {
             return;
         };
         ui.horizontal(|ui| {
+            ui.toggle_value(&mut self.show_legal, "Show legal moves");
+            ui.separator();
             if ui.button("Initialize").clicked() {
                 self.game.dispatch(Action::RequestInit);
             }
@@ -168,7 +172,7 @@ impl TriversiApp {
         let current_player = self.game.current_player();
         let current_position = self.game.current_position();
         let status = self.game.current_status();
-        let legal: HashSet<(usize, usize)> = if status == Status::Play(Play::Turn) {
+        let legal: HashSet<(usize, usize)> = if self.show_legal && status == Status::Play(Play::Turn) {
             self.game.availables().get(current_player).keys().copied().collect()
         } else {
             HashSet::new()
