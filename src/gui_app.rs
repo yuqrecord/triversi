@@ -20,18 +20,15 @@ const DEFAULT_PLAYER_NAMES: &str = "1,2,3";
 pub struct TriversiApp {
     game: Game,
     show_legal: bool,
-    dark_mode: bool,
 }
 
 impl TriversiApp {
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         cc.egui_ctx.set_pixels_per_point(1.5);
-        // Read the initial theme from whatever eframe applied (OS preference).
-        let dark_mode = cc.egui_ctx.global_style().visuals.dark_mode;
+        cc.egui_ctx.set_visuals(egui::Visuals::dark());
         Self {
             game: new_game(),
             show_legal: false,
-            dark_mode,
         }
     }
 
@@ -41,13 +38,7 @@ impl TriversiApp {
     }
 
     fn ui_top(&mut self, ui: &mut egui::Ui) {
-        ui.horizontal(|ui| {
-            ui.heading("Triversi");
-            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                let label = if self.dark_mode { "Dark" } else { "Light" };
-                ui.toggle_value(&mut self.dark_mode, label);
-            });
-        });
+        ui.heading("Triversi");
         ui.horizontal(|ui| {
             ui.label(format!("Turn: {}", self.game.history().current_turn() + 1));
         });
@@ -176,7 +167,7 @@ impl TriversiApp {
                     painter.circle_stroke(
                         center,
                         layout.radius,
-                        egui::Stroke::new(2.5, egui::Color32::WHITE),
+                        egui::Stroke::new(2.5, player_color(current_player)),
                     );
                 }
             }
@@ -218,11 +209,6 @@ impl TriversiApp {
 impl eframe::App for TriversiApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
-        ctx.set_visuals(if self.dark_mode {
-            egui::Visuals::dark()
-        } else {
-            egui::Visuals::light()
-        });
 
         egui::Panel::top("triversi_top").show_inside(ui, |ui| self.ui_top(ui));
         egui::Panel::bottom("triversi_bottom").show_inside(ui, |ui| self.ui_bottom(ui));
