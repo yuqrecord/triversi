@@ -209,6 +209,7 @@ impl TriversiApp {
 impl eframe::App for TriversiApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
+        ctx.set_visuals(egui::Visuals::dark());
 
         egui::Panel::top("triversi_top").show_inside(ui, |ui| self.ui_top(ui));
         egui::Panel::bottom("triversi_bottom").show_inside(ui, |ui| self.ui_bottom(ui));
