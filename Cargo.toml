@@ -37,6 +37,16 @@ tui = { version = "0.19", default-features = false, features = ['termion'] }
 unicode-width = "0.2"
 eframe = { version = "0.34", default-features = false, features = ["wayland", "x11"] }
 
+# macOS application menu customization via Objective-C runtime.
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6.4"
+objc2-app-kit = { version = "0.3.2", default-features = false, features = [
+    "std", "NSApplication", "NSMenu", "NSMenuItem",
+] }
+objc2-foundation = { version = "0.3.2", default-features = false, features = [
+    "std", "NSString",
+] }
+
 # WebAssembly entry-point helpers for the egui/eframe GUI.
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen-futures = "0.4"

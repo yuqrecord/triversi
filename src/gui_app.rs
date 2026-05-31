@@ -20,6 +20,8 @@ const DEFAULT_PLAYER_NAMES: &str = "1,2,3";
 pub struct TriversiApp {
     game: Game,
     show_legal: bool,
+    #[cfg(target_os = "macos")]
+    menu_setup_done: bool,
 }
 
 impl TriversiApp {
@@ -29,6 +31,8 @@ impl TriversiApp {
         Self {
             game: new_game(),
             show_legal: false,
+            #[cfg(target_os = "macos")]
+            menu_setup_done: false,
         }
     }
 
@@ -208,6 +212,12 @@ impl TriversiApp {
 
 impl eframe::App for TriversiApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+        #[cfg(target_os = "macos")]
+        if !self.menu_setup_done {
+            setup_macos_app_menu();
+            self.menu_setup_done = true;
+        }
+
         let ctx = ui.ctx().clone();
         ctx.set_visuals(egui::Visuals::dark());
 
@@ -280,6 +290,47 @@ fn player_color(player: Player) -> egui::Color32 {
         Player::Zero => egui::Color32::from_rgb(0, 200, 200),
         Player::One => egui::Color32::from_rgb(220, 80, 220),
         Player::Two => egui::Color32::from_rgb(220, 200, 40),
+    }
+}
+
+#[cfg(target_os = "macos")]
+#[expect(unsafe_code)]
+fn setup_macos_app_menu() {
+    use objc2::{sel, MainThreadMarker, MainThreadOnly as _};
+    use objc2_app_kit::{NSApplication, NSMenuItem};
+    use objc2_foundation::NSString;
+
+    unsafe extern "C" {
+        static NSApp: Option<&'static NSApplication>;
+    }
+
+    unsafe {
+        let Some(app) = NSApp else { return };
+        let Some(main_menu) = app.mainMenu() else { return };
+        let Some(item) = main_menu.itemAtIndex(0) else { return };
+        let Some(app_menu) = item.submenu() else { return };
+
+        app_menu.removeAllItems();
+
+        let mtm = MainThreadMarker::new_unchecked();
+
+        let about = NSMenuItem::initWithTitle_action_keyEquivalent(
+            NSMenuItem::alloc(mtm),
+            &NSString::from_str("About Triversi"),
+            Some(sel!(orderFrontStandardAboutPanel:)),
+            &NSString::from_str(""),
+        );
+        app_menu.addItem(&about);
+
+        app_menu.addItem(&NSMenuItem::separatorItem(mtm));
+
+        let quit = NSMenuItem::initWithTitle_action_keyEquivalent(
+            NSMenuItem::alloc(mtm),
+            &NSString::from_str("Quit Triversi"),
+            Some(sel!(terminate:)),
+            &NSString::from_str("q"),
+        );
+        app_menu.addItem(&quit);
     }
 }
 
