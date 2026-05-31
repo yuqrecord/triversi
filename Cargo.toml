@@ -16,6 +16,13 @@ lto = true
 panic = 'abort'
 codegen-units = 1
 
+[package.metadata.bundle.bin.gui]
+name = "Triversi"
+identifier = "io.github.yuqrecord.triversi"
+icon = [
+    "assets/icons/triversi.icns",
+]
+
 [dependencies]
 anyhow = "1.0"
 getset = "0.1"

@@ -290,7 +290,18 @@ fn new_game() -> Game {
 
 #[cfg(not(target_arch = "wasm32"))]
 pub fn run_native() -> eframe::Result<()> {
-    let options = eframe::NativeOptions::default();
+    let icon = eframe::icon_data::from_png_bytes(include_bytes!(
+        "../assets/icons/triversi.png"
+    ))
+    .expect("embedded app icon PNG is valid");
+
+    let options = eframe::NativeOptions {
+        viewport: egui::ViewportBuilder::default()
+            .with_title("Triversi")
+            .with_icon(icon),
+        ..Default::default()
+    };
+
     eframe::run_native(
         "Triversi",
         options,
