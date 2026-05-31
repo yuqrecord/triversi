@@ -1,0 +1,24 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1024"
+  height="1024"
+  viewBox="0 0 1024 1024"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">Triversi app icon</title>
+  <desc id="desc">The center three stones from Triversi's initial board on the game screen background.</desc>
+
+  <rect width="1024" height="1024" fill="#1b1b1b" />
+
+  <g>
+    <circle cx="512" cy="346" r="151" fill="#2d2d2d" />
+    <circle cx="512" cy="346" r="121" fill="#00c8c8" />
+
+    <circle cx="332" cy="658" r="151" fill="#2d2d2d" />
+    <circle cx="332" cy="658" r="121" fill="#dc50dc" />
+
+    <circle cx="692" cy="658" r="151" fill="#2d2d2d" />
+    <circle cx="692" cy="658" r="121" fill="#dcc828" />
+  </g>
+</svg>
