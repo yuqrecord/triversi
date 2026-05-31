@@ -57,6 +57,17 @@ Click a cell to place a stone (legal moves are outlined). The arrow keys move th
 cursor and Enter confirms. Buttons are provided for initialize, quit, and history
 navigation.
 
+### macOS App Bundle
+
+To build a `.app` bundle (requires [cargo-bundle](https://github.com/burtonageo/cargo-bundle)):
+
+```sh
+cargo install cargo-bundle
+cargo bundle --bin gui --release
+```
+
+The app is generated at `target/release/bundle/osx/Triversi.app`.
+
 ### WebAssembly
 
 Building for the browser uses [Trunk](https://trunkrs.dev/):
