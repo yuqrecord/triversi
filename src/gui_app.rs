@@ -291,7 +291,7 @@ fn new_game() -> Game {
 #[cfg(not(target_arch = "wasm32"))]
 pub fn run_native() -> eframe::Result<()> {
     let icon = eframe::icon_data::from_png_bytes(include_bytes!(
-        "../assets/icons/triversi.png"
+        "../assets/icons/mac/triversi.png"
     ))
     .expect("embedded app icon PNG is valid");
 
